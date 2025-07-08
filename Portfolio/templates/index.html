@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SQL Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div id="lang-toggle">
+  <label class="switch">
+    <input type="checkbox" id="langSwitch">
+    <span class="slider round"></span>
+  </label>
+  <span id="lang-label">EN</span>
+</div>
+
+
+    <header class="intro-card fade-in">
+    <h2 class="site-title">Luis Diego's Portfolio</h2>
+    <p class="site-subtitle">
+        I have always been fond of SQL and how everything in life can be interpreted as a query,<br>
+        so I decided: let's have people dust off their SQL skills by doing some queries! Have fun!
+    </p>
+    </header>
+
+ <section class="examples-card fade-in">
+  <h3>Card system:</h3>
+  <p>Everything that is available in this portfolio is available through a card system.</p>
+  <p>Click on the cards below to see more details about each section.</p>
+</section>
+
+   
+</section>   
+
+   <div class="container">
+    <div class="query-card slide-up">
+        <form id="queryForm">
+            <textarea name="query" id="queryBox" placeholder="SELECT * FROM projects;"></textarea>
+            <br>
+            <button type="submit">Enter</button>
+        </form>
+        <div id="results"></div>
+    </div>
+</div>
+    
+<div id="cue-wrapper" class="collapsed">
+  <div id="cue-toggle-bar">
+    <button id="toggle-cue" aria-label="Mostrar tarjetas">
+      <span class="cue-label">¿No sabes de SQL?</span> ▲
+    </button>
+  </div>
+  <div id="cue-box">
+    <h2 class="sql-help-title">¿Qué es SQL?</h2>
+    <div class="sql-cue-column">
+      <div class="cue-level" data-content="sql" data-level="1"> ¿Qué es SQL?</div>
+      <div class="cue-level locked" data-content="table" data-level="2"> ¿Qué es una tabla?</div>
+      <div class="cue-level locked" data-content="query" data-level="3"> ¿Qué es un query?</div>
+      <div class="cue-level locked" data-content="structure" data-level="4"> ¿Cuál es la estructura de un query?</div>
+      <div class="cue-level locked" data-content="select" data-level="5"> ¿Qué hace SELECT?</div>
+      <div class="cue-level locked" data-content="where" data-level="6"> ¿Y WHERE?</div>
+      <div class="cue-level locked" data-content="querypractice1" data-level="7"> Práctica 1: Consulta simple</div>
+      <div class="cue-level locked" data-content="querypractice2" data-level="8"> Práctica 2: Filtrado</div>
+    </div>
+  </div>
+</div>
+
+<div id="cue-detail" class="hidden">
+    <button id="close-cue" class="close-btn" aria-label="Close">X</button>
+    <div id="cue-content"></div>
+    <button id="next-cue" class="next-btn">Siguiente →</button>
+</div>
+   
+
+<div id="card-hand">
+    <div class="card">🧠 Skills</div>
+    <div class="card">🎓 Education</div>
+    <div class="card">📂 Experience</div>
+    <div class="card">🚀 Projects</div>
+</div>
+<div id="overlay" class="hidden"></div>
+<div id="card-detail" class="hidden">
+    <button id="close-card" class="close-btn" aria-label="Close">X</button>
+    <div id="card-content"></div>
+</div>
+
+
+
+
+
+ <script src ="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
