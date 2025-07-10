@@ -20,7 +20,9 @@ def index():
 # and return the results as JSON.
 @app.route('/query', methods=['POST'])
 def query():
+    print("Query endpoint hit!")  # <--- prueba si llega el POST
     sql = request.form.get('query')
+    print("SQL received:", sql)
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
@@ -35,7 +37,6 @@ def query():
             return jsonify({
                 'error': str(e)
             })
-    
 
 # When a GET request is made to the '/projects' endpoint, fetch all projects from the database
 # and return them as JSON.   
