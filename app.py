@@ -40,5 +40,3 @@ def query():
 
 # When a GET request is made to the '/projects' endpoint, fetch all projects from the database
 # and return them as JSON.   
-if __name__ == '__main__':
-    app.run(debug=True)
