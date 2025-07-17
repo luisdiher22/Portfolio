@@ -570,3 +570,57 @@ input:checked + .slider.round {
 input:checked + .slider.round:before {
     transform: translateX(20px);
 }
+
+/* SQL Results Table Styles */
+.results-table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.results-table th {
+    background-color: #333;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.results-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.results-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.results-table tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Error Message Styles */
+.error {
+    background-color: #fee;
+    color: #c33;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #fcc;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+/* Results Container */
+#results {
+    margin-top: 20px;
+    text-align: left;
+}
+
+#results p {
+    margin: 10px 0;
+    color: #666;
+    font-style: italic;
+}

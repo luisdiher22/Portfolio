@@ -263,3 +263,60 @@ document.getElementById("next-cue").addEventListener("click", () => {
     next.click();
   }
 });
+
+// Handle SQL query form submission
+document.getElementById("queryForm").addEventListener("submit", function(e) {
+  e.preventDefault(); // Prevent default form submission
+  
+  const formData = new FormData(this);
+  const query = formData.get('query');
+  
+  if (!query.trim()) {
+    alert('Please enter a SQL query');
+    return;
+  }
+  
+  // Show loading state
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = '<p>Executing query...</p>';
+  
+  // Send POST request to /query endpoint
+  fetch('/query', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      resultsDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+    } else {
+      // Display results in a table
+      let html = '<table class="results-table"><thead><tr>';
+      
+      // Add column headers
+      data.columns.forEach(col => {
+        html += `<th>${col}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+      
+      // Add data rows
+      data.rows.forEach(row => {
+        html += '<tr>';
+        row.forEach(cell => {
+          html += `<td>${cell !== null ? cell : 'NULL'}</td>`;
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      
+      if (data.rows.length === 0) {
+        html = '<p>Query executed successfully but returned no results.</p>';
+      }
+      
+      resultsDiv.innerHTML = html;
+    }
+  })
+  .catch(error => {
+    resultsDiv.innerHTML = `<div class="error">Network error: ${error.message}</div>`;
+  });
+});

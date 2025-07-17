@@ -39,4 +39,23 @@ def query():
             })
 
 # When a GET request is made to the '/projects' endpoint, fetch all projects from the database
-# and return them as JSON.   
+# and return them as JSON.
+@app.route('/projects', methods=['GET'])
+def projects():
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM projects")
+            columns = [desc[0] for desc in cursor.description]
+            rows = cursor.fetchall()
+            return jsonify({
+                'columns': columns,
+                'rows': rows
+            })
+    except Exception as e:
+        return jsonify({
+            'error': str(e)
+        })
+
+if __name__ == '__main__':
+    app.run(debug=True, host='127.0.0.1', port=5000)
