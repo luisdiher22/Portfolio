@@ -158,7 +158,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-top: 25px; /* Reduced from 40px */
+    padding-top: 15px; /* Reduced from 25px */
     min-height: 100vh;
     position: relative;
     overflow: hidden !important; /* Prevent all scrolling */
@@ -319,10 +319,10 @@ body::before {
 }
 
 .container {
-    width: 600px;
+    width: 500px; /* Reduced from 600px */
     text-align: center;
     transition: transform 0.6s ease, opacity 0.6s ease;
-    margin-top: 30px; /* Reduced from 40px */
+    margin-top: 20px; /* Reduced from 30px */
     position: relative;
     z-index: 5;
 }
@@ -384,16 +384,16 @@ th, td {
 
 .intro-card {
     position: absolute;
-    top: 50px; /* Reduced from 60px */
-    left: 20px;
+    top: 40px; /* Reduced from 50px */
+    left: 15px; /* Reduced from 20px */
     background: rgba(251, 243, 242, 0.95);
     backdrop-filter: blur(10px);
-    padding: 25px 20px; /* Reduced padding */
+    padding: 20px 18px; /* Reduced padding */
     border-radius: 16px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(250, 153, 28, 0.3);
-    max-width: 400px; /* Reduced from 450px */
-    min-height: 400px; /* Reduced from 480px */
+    max-width: 350px; /* Reduced from 400px */
+    min-height: 350px; /* Reduced from 400px */
     transition: transform 0.6s ease, opacity 0.6s ease;
     z-index: 10;
 }
@@ -446,13 +446,13 @@ th, td {
 
 .query-card {
     background-color: #1C768F;
-    padding: 30px;
+    padding: 25px; /* Reduced from 30px */
     border-radius: 16px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 600px;
+    max-width: 500px; /* Reduced from 600px */
     text-align: center;
-    margin-top: -20px; /* Reduced negative margin for better spacing */
+    margin-top: -10px; /* Reduced negative margin */
 }
 
 #results {
@@ -504,27 +504,27 @@ th, td {
 
 #card-hand {
     position: fixed;
-    bottom: -50px; /* More visible */
+    bottom: -40px; /* More visible */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: -5px; /* Reduced gap */
-    padding: 0 20px;
+    gap: 0px; /* No negative gap */
+    padding: 0 15px; /* Reduced padding */
     z-index: 10;
-    height: 320px; /* Reduced height */
+    height: 280px; /* Reduced height */
     pointer-events: none;
-    width: 800px; /* Reduced width */
+    width: 700px; /* Reduced width */
     max-width: 95vw; /* Prevent horizontal overflow */
     overflow: visible;
     transition: transform 0.6s ease, opacity 0.6s ease;
 }
 .card {
-    width: 130px; /* Reduced from 140px */
-    height: 180px; /* Reduced from 200px */
+    width: 110px; /* Reduced from 130px */
+    height: 150px; /* Reduced from 180px */
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-radius: 20px;
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    padding: 12px 8px; /* Reduced padding */
+    padding: 10px 6px; /* Reduced padding */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1940,79 +1940,79 @@ input:checked + .slider.round:before {
 }
 
 /* Common Laptop Screens (1366px width) */
-@media screen and (min-width: 1280px) and (max-width: 1400px) and (max-height: 800px) {
+@media screen and (min-width: 1200px) and (max-width: 1500px) {
     .container {
-        width: 450px !important;
-        margin-top: 15px !important;
+        width: 400px !important;
+        margin-top: 10px !important;
     }
     
     .intro-card {
-        max-width: 350px !important;
-        top: 25px !important;
-        left: 10px !important;
-        padding: 18px 15px !important;
-        min-height: 320px !important;
+        max-width: 320px !important;
+        top: 20px !important;
+        left: 8px !important;
+        padding: 15px 12px !important;
+        min-height: 280px !important;
     }
     
     .site-title {
-        font-size: 1.4rem !important;
+        font-size: 1.3rem !important;
     }
     
     .site-subtitle {
-        font-size: 0.95rem !important;
+        font-size: 0.9rem !important;
     }
     
     .examples-section h3 {
-        font-size: 1.1rem !important;
+        font-size: 1rem !important;
     }
     
     .examples-section p {
-        font-size: 0.85rem !important;
+        font-size: 0.8rem !important;
     }
     
     #card-hand {
-        width: 550px !important;
-        height: 200px !important;
-        bottom: -20px !important;
-        gap: 0px !important;
+        width: 480px !important;
+        height: 160px !important;
+        bottom: -10px !important;
+        gap: 2px !important;
     }
     
     .card {
-        width: 85px !important;
-        height: 110px !important;
-        padding: 6px 4px !important;
+        width: 70px !important;
+        height: 95px !important;
+        padding: 5px 3px !important;
     }
     
     .card-title {
-        font-size: 0.6rem !important;
+        font-size: 0.55rem !important;
     }
     
     .card-icon {
-        font-size: 1.2rem !important;
+        font-size: 1rem !important;
     }
     
     #chibi-helper {
-        right: -50px !important;
-        transform: translateY(-50%) scale(0.7) !important;
+        right: -40px !important;
+        transform: translateY(-50%) scale(0.6) !important;
     }
     
     #chibi-helper:hover {
-        right: -20px !important;
+        right: -15px !important;
     }
     
     .query-card {
-        padding: 18px !important;
-        max-width: 450px !important;
-        margin-top: 0px !important;
+        padding: 15px !important;
+        max-width: 400px !important;
+        margin-top: 5px !important;
     }
     
     .language-popup-content {
-        padding: 25px !important;
-        max-width: 300px !important;
+        padding: 20px !important;
+        max-width: 280px !important;
     }
     
     .language-popup-content h2 {
-        font-size: 1.4rem !important;
+        font-size: 1.3rem !important;
     }
 }
 
