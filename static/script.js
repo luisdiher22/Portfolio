@@ -349,7 +349,14 @@ function updateBuilderDisplay() {
         queryDisplay.classList.add('active');
         queryDisplay.innerHTML = queryBlocks.map((block, index) => {
             const blockClass = block.type === 'table' ? 'query-block table-block' : 'query-block';
-            return `<span class="${blockClass}" onclick="removeBlock(${index})">${block.value}<span class="remove-btn">×</span></span>`;
+            return `<span class="${blockClass}" 
+                        draggable="true" 
+                        data-index="${index}" 
+                        ondragstart="handleDragStart(event)" 
+                        ondragover="handleDragOver(event)" 
+                        ondrop="handleDrop(event)" 
+                        ondragend="handleDragEnd(event)"
+                        onmousedown="handleMouseDown(event, ${index})">${block.value}<span class="remove-btn" onclick="event.stopPropagation(); removeBlock(${index})">×</span></span>`;
         }).join('');
     }
 }
@@ -359,8 +366,105 @@ function removeBlock(index) {
     updateBuilderDisplay();
 }
 
+// Handle click vs drag detection
+let isDragging = false;
+let mouseDownTime = 0;
+
+function handleMouseDown(event, index) {
+    isDragging = false;
+    mouseDownTime = Date.now();
+    
+    // If not clicking on remove button, handle block click
+    if (!event.target.classList.contains('remove-btn')) {
+        setTimeout(() => {
+            if (!isDragging && Date.now() - mouseDownTime < 200) {
+                // This was a quick click, not a drag - could add click functionality here if needed
+            }
+        }, 200);
+    }
+}
+
+// Drag and Drop functionality
+let draggedIndex = null;
+
+function handleDragStart(event) {
+    isDragging = true;
+    draggedIndex = parseInt(event.target.getAttribute('data-index'));
+    event.target.style.opacity = '0.5';
+    event.dataTransfer.effectAllowed = 'move';
+}
+
+function handleDragOver(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+    
+    // Add visual feedback
+    const targetElement = event.target.closest('.query-block');
+    if (targetElement && !targetElement.classList.contains('drag-over')) {
+        document.querySelectorAll('.query-block').forEach(block => {
+            block.classList.remove('drag-over');
+        });
+        targetElement.classList.add('drag-over');
+    }
+}
+
+function handleDrop(event) {
+    event.preventDefault();
+    const targetElement = event.target.closest('.query-block');
+    
+    if (targetElement) {
+        const targetIndex = parseInt(targetElement.getAttribute('data-index'));
+        
+        if (draggedIndex !== null && draggedIndex !== targetIndex) {
+            // Reorder the blocks
+            const draggedBlock = queryBlocks[draggedIndex];
+            queryBlocks.splice(draggedIndex, 1);
+            queryBlocks.splice(targetIndex, 0, draggedBlock);
+            updateBuilderDisplay();
+        }
+    }
+    
+    // Clean up visual feedback
+    document.querySelectorAll('.query-block').forEach(block => {
+        block.classList.remove('drag-over');
+    });
+}
+
+function handleDragEnd(event) {
+    event.target.style.opacity = '1';
+    draggedIndex = null;
+    isDragging = false;
+    
+    // Clean up visual feedback
+    document.querySelectorAll('.query-block').forEach(block => {
+        block.classList.remove('drag-over');
+    });
+}
+
 // Add click handlers to SQL blocks
 document.addEventListener('DOMContentLoaded', function() {
+    // Setup drag and drop for query display area
+    const queryDisplay = document.getElementById('queryDisplay');
+    
+    queryDisplay.addEventListener('dragover', function(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+    });
+    
+    queryDisplay.addEventListener('drop', function(event) {
+        event.preventDefault();
+        // This handles dropping when the display area is empty or between blocks
+        if (event.target === queryDisplay || event.target.classList.contains('placeholder-text')) {
+            // If dropping on empty area, move to end
+            if (draggedIndex !== null) {
+                const draggedBlock = queryBlocks[draggedIndex];
+                queryBlocks.splice(draggedIndex, 1);
+                queryBlocks.push(draggedBlock);
+                updateBuilderDisplay();
+            }
+        }
+    });
+
     document.querySelectorAll('.sql-block:not(.input-block)').forEach(block => {
         block.addEventListener('click', function() {
             if (this.classList.contains('disabled')) return;

@@ -686,11 +686,26 @@ input:checked + .slider.round:before {
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    position: relative;
 }
 
 .query-block:hover {
     background-color: #032539;
     transform: translateY(-1px);
+}
+
+.query-block.drag-over {
+    border: 2px dashed #FA991C;
+    background-color: #032539;
+    transform: scale(1.05);
+}
+
+.query-block[draggable="true"] {
+    cursor: grab;
+}
+
+.query-block[draggable="true"]:active {
+    cursor: grabbing;
 }
 
 .query-block.table-block {
