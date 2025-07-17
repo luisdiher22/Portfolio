@@ -1,6 +1,8 @@
 html {
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto; /* Allow vertical scrolling */
+    scroll-behavior: smooth; /* Smooth scrolling */
 }
 
 /* Language Selection Popup */
@@ -141,8 +143,10 @@ body {
     font-family: 'Jost', sans-serif;
     margin: 0;
     position: relative;
-    overflow: hidden; /* Prevent scrolling */
-    height: 100vh; /* Fixed height instead of min-height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto; /* Allow vertical scrolling */
+    min-height: 100vh; /* Allow content to be taller than viewport */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 /* Apply blur to main content instead of body */
@@ -154,6 +158,8 @@ body {
     padding-top: 20px; /* Reduced padding */
     min-height: 100vh;
     position: relative;
+    overflow-y: auto; /* Allow scrolling within main content */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     filter: blur(5px); /* Initial blur */
     transition: filter 0.6s ease, transform 0.6s ease, opacity 0.6s ease;
 }
@@ -1842,11 +1848,15 @@ input:checked + .slider.round:before {
     
     .main-content {
         padding-top: 10px !important;
+        align-items: flex-start !important; /* Allow content to flow naturally */
+        min-height: auto !important; /* Don't force full height on mobile */
     }
     
-    /* Hide overflow on mobile */
+    /* Hide horizontal overflow on mobile but allow vertical scrolling */
     html, body {
         overflow-x: hidden !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
     }
 }
 
