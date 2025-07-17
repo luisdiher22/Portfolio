@@ -158,7 +158,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-top: 40px; /* Increased padding for better spacing */
+    padding-top: 25px; /* Reduced from 40px */
     min-height: 100vh;
     position: relative;
     overflow: hidden !important; /* Prevent all scrolling */
@@ -322,7 +322,7 @@ body::before {
     width: 600px;
     text-align: center;
     transition: transform 0.6s ease, opacity 0.6s ease;
-    margin-top: 40px; /* Increased margin for better spacing */
+    margin-top: 30px; /* Reduced from 40px */
     position: relative;
     z-index: 5;
 }
@@ -384,16 +384,16 @@ th, td {
 
 .intro-card {
     position: absolute;
-    top: 60px; /* Adjusted for new layout */
+    top: 50px; /* Reduced from 60px */
     left: 20px;
     background: rgba(251, 243, 242, 0.95);
     backdrop-filter: blur(10px);
-    padding: 30px 25px;
+    padding: 25px 20px; /* Reduced padding */
     border-radius: 16px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(250, 153, 28, 0.3);
-    max-width: 450px;
-    min-height: 480px; /* Slightly smaller */
+    max-width: 400px; /* Reduced from 450px */
+    min-height: 400px; /* Reduced from 480px */
     transition: transform 0.6s ease, opacity 0.6s ease;
     z-index: 10;
 }
@@ -504,27 +504,27 @@ th, td {
 
 #card-hand {
     position: fixed;
-    bottom: -60px; /* Less hidden, more visible */
+    bottom: -50px; /* More visible */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: -10px;
+    gap: -5px; /* Reduced gap */
     padding: 0 20px;
     z-index: 10;
-    height: 360px; /* Reduced height */
+    height: 320px; /* Reduced height */
     pointer-events: none;
-    width: 900px;
+    width: 800px; /* Reduced width */
     max-width: 95vw; /* Prevent horizontal overflow */
     overflow: visible;
     transition: transform 0.6s ease, opacity 0.6s ease;
 }
 .card {
-    width: 140px;
-    height: 200px;
+    width: 130px; /* Reduced from 140px */
+    height: 180px; /* Reduced from 200px */
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-radius: 20px;
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    padding: 15px 10px;
+    padding: 12px 8px; /* Reduced padding */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -786,7 +786,7 @@ th, td {
 /* Chibi Tutorial Helper */
 #chibi-helper {
     position: fixed;
-    right: -80px; /* Less hidden initially for better visibility */
+    right: -60px; /* More visible initially */
     top: 50%;
     transform: translateY(-50%);
     z-index: 1000;
@@ -795,7 +795,7 @@ th, td {
 }
 
 #chibi-helper:hover {
-    right: -30px; /* Shows more on hover */
+    right: -20px; /* Shows more on hover */
 }
 
 #chibi-character {
@@ -1942,77 +1942,77 @@ input:checked + .slider.round:before {
 /* Common Laptop Screens (1366px width) */
 @media screen and (min-width: 1280px) and (max-width: 1400px) and (max-height: 800px) {
     .container {
-        width: 500px !important;
-        margin-top: 25px !important;
+        width: 450px !important;
+        margin-top: 15px !important;
     }
     
     .intro-card {
-        max-width: 400px !important;
-        top: 35px !important;
-        left: 15px !important;
-        padding: 22px 18px !important;
-        min-height: 380px !important;
+        max-width: 350px !important;
+        top: 25px !important;
+        left: 10px !important;
+        padding: 18px 15px !important;
+        min-height: 320px !important;
     }
     
     .site-title {
-        font-size: 1.6rem !important;
-    }
-    
-    .site-subtitle {
-        font-size: 1.05rem !important;
-    }
-    
-    .examples-section h3 {
-        font-size: 1.25rem !important;
-    }
-    
-    .examples-section p {
-        font-size: 0.95rem !important;
-    }
-    
-    #card-hand {
-        width: 650px !important;
-        height: 250px !important;
-        bottom: -40px !important;
-        gap: -3px !important;
-    }
-    
-    .card {
-        width: 100px !important;
-        height: 135px !important;
-        padding: 8px 6px !important;
-    }
-    
-    .card-title {
-        font-size: 0.7rem !important;
-    }
-    
-    .card-icon {
         font-size: 1.4rem !important;
     }
     
+    .site-subtitle {
+        font-size: 0.95rem !important;
+    }
+    
+    .examples-section h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .examples-section p {
+        font-size: 0.85rem !important;
+    }
+    
+    #card-hand {
+        width: 550px !important;
+        height: 200px !important;
+        bottom: -20px !important;
+        gap: 0px !important;
+    }
+    
+    .card {
+        width: 85px !important;
+        height: 110px !important;
+        padding: 6px 4px !important;
+    }
+    
+    .card-title {
+        font-size: 0.6rem !important;
+    }
+    
+    .card-icon {
+        font-size: 1.2rem !important;
+    }
+    
     #chibi-helper {
-        right: -80px !important;
-        transform: translateY(-50%) scale(0.8) !important;
+        right: -50px !important;
+        transform: translateY(-50%) scale(0.7) !important;
     }
     
     #chibi-helper:hover {
-        right: -40px !important;
+        right: -20px !important;
     }
     
     .query-card {
-        padding: 22px !important;
-        max-width: 500px !important;
-        margin-top: -10px !important;
+        padding: 18px !important;
+        max-width: 450px !important;
+        margin-top: 0px !important;
     }
     
     .language-popup-content {
-        padding: 30px !important;
-        max-width: 330px !important;
+        padding: 25px !important;
+        max-width: 300px !important;
     }
     
     .language-popup-content h2 {
-        font-size: 1.6rem !important;
+        font-size: 1.4rem !important;
     }
 }
 
