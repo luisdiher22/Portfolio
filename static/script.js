@@ -305,6 +305,9 @@ function setupBuilderControls() {
         if (!isBuilderMode) {
             queryBox.value = '';
         }
+        
+        // Reset to original layout
+        resetToOriginalLayout();
     });
 
     // Set initial state
@@ -399,51 +402,143 @@ document.getElementById("queryForm").addEventListener("submit", function(e) {
     return;
   }
   
-  // Show loading state
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = '<p>Executing query...</p>';
+  // Show loading overlay with dim background
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  loadingOverlay.style.display = 'flex';
+  
+  // Reset loading bar animation
+  const loadingProgress = document.querySelector('.loading-progress');
+  loadingProgress.style.animation = 'none';
+  loadingProgress.offsetHeight; // Trigger reflow
+  loadingProgress.style.animation = 'loadingAnimation 2s ease-in-out forwards, gradientShift 2s ease-in-out infinite';
   
   // Create form data
   const formData = new FormData();
   formData.append('query', query);
   
-  // Send POST request to /query endpoint
-  fetch('/query', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.error) {
-      resultsDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
-    } else {
-      // Display results in a table
-      let html = '<table class="results-table"><thead><tr>';
+  // Wait for loading animation (2 seconds) then send request and transform layout
+  setTimeout(() => {
+    // Send POST request to /query endpoint
+    fetch('/query', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Hide loading overlay
+      loadingOverlay.style.display = 'none';
       
-      // Add column headers
-      data.columns.forEach(col => {
-        html += `<th>${col}</th>`;
-      });
-      html += '</tr></thead><tbody>';
+      // Transform layout: move query builder left, show results card right
+      transformToSplitLayout();
       
-      // Add data rows
-      data.rows.forEach(row => {
-        html += '<tr>';
-        row.forEach(cell => {
-          html += `<td>${cell !== null ? cell : 'NULL'}</td>`;
+      // Get results elements
+      const resultsDiv = document.getElementById('results');
+      const resultsCard = document.getElementById('resultsCard');
+      
+      if (data.error) {
+        resultsDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+      } else {
+        // Display results in a table
+        let html = '<table class="results-table"><thead><tr>';
+        
+        // Add column headers
+        data.columns.forEach(col => {
+          html += `<th>${col}</th>`;
         });
-        html += '</tr>';
-      });
-      html += '</tbody></table>';
-      
-      if (data.rows.length === 0) {
-        html = '<p>Query executed successfully but returned no results.</p>';
+        html += '</tr></thead><tbody>';
+        
+        // Add data rows
+        data.rows.forEach(row => {
+          html += '<tr>';
+          row.forEach(cell => {
+            html += `<td>${cell !== null ? cell : 'NULL'}</td>`;
+          });
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+        
+        if (data.rows.length === 0) {
+          html = '<p>Query executed successfully but returned no results.</p>';
+        }
+        
+        resultsDiv.innerHTML = html;
       }
       
-      resultsDiv.innerHTML = html;
-    }
-  })
-  .catch(error => {
-    resultsDiv.innerHTML = `<div class="error">Network error: ${error.message}</div>`;
-  });
+      // Show results card with animation
+      resultsCard.style.display = 'block';
+      setTimeout(() => {
+        resultsCard.classList.add('show');
+      }, 100);
+      
+    })
+    .catch(error => {
+      // Hide loading overlay
+      loadingOverlay.style.display = 'none';
+      
+      // Still transform layout even on error
+      transformToSplitLayout();
+      
+      const resultsDiv = document.getElementById('results');
+      const resultsCard = document.getElementById('resultsCard');
+      
+      resultsDiv.innerHTML = `<div class="error">Network error: ${error.message}</div>`;
+      
+      // Show results card with animation
+      resultsCard.style.display = 'block';
+      setTimeout(() => {
+        resultsCard.classList.add('show');
+      }, 100);
+    });
+  }, 2000); // 2 second delay for loading animation
 });
+
+function transformToSplitLayout() {
+  const container = document.querySelector('.container');
+  const queryCard = document.querySelector('.query-card');
+  const body = document.querySelector('body');
+  
+  // Change container to split mode
+  container.classList.add('split-mode');
+  
+  // Position query card to the left
+  queryCard.classList.add('positioned-left');
+  
+  // Create split layout wrapper
+  if (!document.querySelector('.split-layout')) {
+    const splitLayout = document.createElement('div');
+    splitLayout.className = 'split-layout';
+    
+    // Move container into split layout
+    container.parentNode.insertBefore(splitLayout, container);
+    splitLayout.appendChild(container);
+    
+    // Move results card into split layout
+    const resultsCard = document.getElementById('resultsCard');
+    splitLayout.appendChild(resultsCard);
+  }
+}
+
+function resetToOriginalLayout() {
+  const container = document.querySelector('.container');
+  const queryCard = document.querySelector('.query-card');
+  const resultsCard = document.getElementById('resultsCard');
+  const splitLayout = document.querySelector('.split-layout');
+  
+  // Reset classes
+  container.classList.remove('split-mode');
+  queryCard.classList.remove('positioned-left');
+  resultsCard.classList.remove('show');
+  
+  // Hide results card
+  resultsCard.style.display = 'none';
+  
+  // Move container back to body if split layout exists
+  if (splitLayout) {
+    const body = document.querySelector('body');
+    body.insertBefore(container, splitLayout);
+    body.removeChild(splitLayout);
+  }
+  
+  // Clear results
+  document.getElementById('results').innerHTML = '';
+}
