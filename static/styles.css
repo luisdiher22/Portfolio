@@ -624,3 +624,203 @@ input:checked + .slider.round:before {
     color: #666;
     font-style: italic;
 }
+
+/* Query Builder Styles */
+#queryBuilder {
+    margin-bottom: 15px;
+}
+
+#queryDisplay {
+    min-height: 60px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    transition: border-color 0.2s ease;
+}
+
+#queryDisplay.active {
+    border-color: #007acc;
+    background-color: #f0f8ff;
+}
+
+#queryDisplay .placeholder-text {
+    color: #999;
+    font-style: italic;
+}
+
+.query-block {
+    background-color: #007acc;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.query-block:hover {
+    background-color: #005999;
+    transform: translateY(-1px);
+}
+
+.query-block.table-block {
+    background-color: #28a745;
+}
+
+.query-block.table-block:hover {
+    background-color: #218838;
+}
+
+.query-block .remove-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.builder-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.builder-actions button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    background-color: #6c757d;
+}
+
+.builder-actions button.active {
+    background-color: #007acc;
+}
+
+.builder-actions button:hover {
+    background-color: #5a6268;
+}
+
+.builder-actions button.active:hover {
+    background-color: #005999;
+}
+
+/* Block Pool Styles */
+#blockPool {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+#blockPool h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.block-category {
+    margin-bottom: 15px;
+}
+
+.category-label {
+    display: block;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.block-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sql-block {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    user-select: none;
+    border: none;
+    outline: none;
+}
+
+.sql-block:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sql-block.table-block {
+    background-color: #28a745;
+}
+
+.sql-block.table-block:hover {
+    background-color: #218838;
+}
+
+.sql-block.input-block {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.sql-block.input-block:hover {
+    background-color: #e0a800;
+}
+
+.sql-block.disabled {
+    background-color: #dee2e6;
+    color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.sql-block.disabled:hover {
+    background-color: #dee2e6;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Input Block Styles */
+.input-block-container {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffc107;
+    border-radius: 20px;
+    padding: 2px;
+}
+
+.input-block-container input {
+    border: none;
+    background: transparent;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+    width: 80px;
+    color: #212529;
+}
+
+.input-block-container input:focus {
+    outline: none;
+}

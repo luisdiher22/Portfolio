@@ -37,10 +37,71 @@
    <div class="container">
     <div class="query-card slide-up">
         <form id="queryForm">
-            <textarea name="query" id="queryBox" placeholder="SELECT * FROM projects;"></textarea>
+            <div id="queryBuilder">
+                <div id="queryDisplay">
+                    <span class="placeholder-text">Click blocks below to build your query...</span>
+                </div>
+                <div class="builder-actions">
+                    <button type="button" id="clearQuery">Clear</button>
+                    <button type="button" id="useBuilder">Use Builder</button>
+                    <button type="button" id="useTextarea">Use Text</button>
+                </div>
+            </div>
+            <textarea name="query" id="queryBox" placeholder="SELECT * FROM projects;" style="display: none;"></textarea>
             <br>
             <button type="submit">Enter</button>
         </form>
+        
+        <div id="blockPool">
+            <h4>SQL Blocks:</h4>
+            <div class="block-category">
+                <span class="category-label">Commands:</span>
+                <div class="block-group">
+                    <div class="sql-block" data-value="SELECT">SELECT</div>
+                    <div class="sql-block" data-value="FROM">FROM</div>
+                    <div class="sql-block" data-value="WHERE">WHERE</div>
+                    <div class="sql-block" data-value="ORDER BY">ORDER BY</div>
+                    <div class="sql-block" data-value="GROUP BY">GROUP BY</div>
+                    <div class="sql-block" data-value="HAVING">HAVING</div>
+                </div>
+            </div>
+            
+            <div class="block-category">
+                <span class="category-label">Tables:</span>
+                <div class="block-group">
+                    <div class="sql-block table-block" data-value="projects">projects</div>
+                    <div class="sql-block table-block" data-value="skills">skills</div>
+                    <div class="sql-block table-block" data-value="education">education</div>
+                    <div class="sql-block table-block" data-value="experience">experience</div>
+                    <div class="sql-block table-block" data-value="clients">clients</div>
+                </div>
+            </div>
+            
+            <div class="block-category">
+                <span class="category-label">Common:</span>
+                <div class="block-group">
+                    <div class="sql-block" data-value="*">*</div>
+                    <div class="sql-block" data-value="=">= </div>
+                    <div class="sql-block" data-value=">">></div>
+                    <div class="sql-block" data-value="<"><</div>
+                    <div class="sql-block" data-value="AND">AND</div>
+                    <div class="sql-block" data-value="OR">OR</div>
+                    <div class="sql-block" data-value="LIKE">LIKE</div>
+                    <div class="sql-block" data-value="ASC">ASC</div>
+                    <div class="sql-block" data-value="DESC">DESC</div>
+                    <div class="sql-block" data-value=";">;</div>
+                </div>
+            </div>
+            
+            <div class="block-category">
+                <span class="category-label">Values:</span>
+                <div class="block-group">
+                    <div class="sql-block input-block" data-type="text" onclick="createInputBlock(this, 'text')">Add Text</div>
+                    <div class="sql-block input-block" data-type="number" onclick="createInputBlock(this, 'number')">Add Number</div>
+                </div>
+            </div>
+        </div>
+        
         <div id="results"></div>
     </div>
 </div>

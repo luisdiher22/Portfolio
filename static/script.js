@@ -264,12 +264,135 @@ document.getElementById("next-cue").addEventListener("click", () => {
   }
 });
 
+// Query Builder Functionality
+let isBuilderMode = true;
+let queryBlocks = [];
+
+// Initialize builder mode
+document.addEventListener('DOMContentLoaded', function() {
+    updateBuilderDisplay();
+    setupBuilderControls();
+});
+
+function setupBuilderControls() {
+    const useBuilderBtn = document.getElementById('useBuilder');
+    const useTextareaBtn = document.getElementById('useTextarea');
+    const clearQueryBtn = document.getElementById('clearQuery');
+    const queryBox = document.getElementById('queryBox');
+    const queryBuilder = document.getElementById('queryBuilder');
+
+    useBuilderBtn.addEventListener('click', function() {
+        isBuilderMode = true;
+        queryBuilder.style.display = 'block';
+        queryBox.style.display = 'none';
+        useBuilderBtn.classList.add('active');
+        useTextareaBtn.classList.remove('active');
+        syncTextareaToBuilder();
+    });
+
+    useTextareaBtn.addEventListener('click', function() {
+        isBuilderMode = false;
+        queryBuilder.style.display = 'none';
+        queryBox.style.display = 'block';
+        useTextareaBtn.classList.add('active');
+        useBuilderBtn.classList.remove('active');
+        syncBuilderToTextarea();
+    });
+
+    clearQueryBtn.addEventListener('click', function() {
+        queryBlocks = [];
+        updateBuilderDisplay();
+        if (!isBuilderMode) {
+            queryBox.value = '';
+        }
+    });
+
+    // Set initial state
+    useBuilderBtn.classList.add('active');
+}
+
+function syncTextareaToBuilder() {
+    const query = queryBlocks.map(block => block.value).join(' ');
+    document.getElementById('queryBox').value = query;
+}
+
+function syncBuilderToTextarea() {
+    const textareaValue = document.getElementById('queryBox').value.trim();
+    if (textareaValue) {
+        // Simple parsing - split by spaces and create blocks
+        queryBlocks = textareaValue.split(/\s+/).map(value => ({
+            value: value,
+            type: getBlockType(value)
+        }));
+        updateBuilderDisplay();
+    }
+}
+
+function getBlockType(value) {
+    const tables = ['projects', 'skills', 'education', 'experience', 'clients'];
+    if (tables.includes(value.toLowerCase())) {
+        return 'table';
+    }
+    return 'default';
+}
+
+function updateBuilderDisplay() {
+    const queryDisplay = document.getElementById('queryDisplay');
+    
+    if (queryBlocks.length === 0) {
+        queryDisplay.innerHTML = '<span class="placeholder-text">Click blocks below to build your query...</span>';
+        queryDisplay.classList.remove('active');
+    } else {
+        queryDisplay.classList.add('active');
+        queryDisplay.innerHTML = queryBlocks.map((block, index) => {
+            const blockClass = block.type === 'table' ? 'query-block table-block' : 'query-block';
+            return `<span class="${blockClass}" onclick="removeBlock(${index})">${block.value}<span class="remove-btn">×</span></span>`;
+        }).join('');
+    }
+}
+
+function removeBlock(index) {
+    queryBlocks.splice(index, 1);
+    updateBuilderDisplay();
+}
+
+// Add click handlers to SQL blocks
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sql-block:not(.input-block)').forEach(block => {
+        block.addEventListener('click', function() {
+            if (this.classList.contains('disabled')) return;
+            
+            const value = this.getAttribute('data-value');
+            const type = this.classList.contains('table-block') ? 'table' : 'default';
+            
+            queryBlocks.push({ value, type });
+            updateBuilderDisplay();
+        });
+    });
+});
+
+function createInputBlock(element, type) {
+    const value = prompt(`Enter ${type} value:`);
+    if (value !== null && value.trim() !== '') {
+        let formattedValue = value.trim();
+        if (type === 'text') {
+            formattedValue = `'${formattedValue}'`;
+        }
+        queryBlocks.push({ value: formattedValue, type: 'input' });
+        updateBuilderDisplay();
+    }
+}
+
 // Handle SQL query form submission
 document.getElementById("queryForm").addEventListener("submit", function(e) {
   e.preventDefault(); // Prevent default form submission
   
-  const formData = new FormData(this);
-  const query = formData.get('query');
+  let query;
+  if (isBuilderMode) {
+    query = queryBlocks.map(block => block.value).join(' ');
+  } else {
+    query = document.getElementById('queryBox').value;
+  }
   
   if (!query.trim()) {
     alert('Please enter a SQL query');
@@ -279,6 +402,10 @@ document.getElementById("queryForm").addEventListener("submit", function(e) {
   // Show loading state
   const resultsDiv = document.getElementById('results');
   resultsDiv.innerHTML = '<p>Executing query...</p>';
+  
+  // Create form data
+  const formData = new FormData();
+  formData.append('query', query);
   
   // Send POST request to /query endpoint
   fetch('/query', {
