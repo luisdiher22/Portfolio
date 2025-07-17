@@ -70,25 +70,57 @@ th, td {
     top: 20px;
     left: 20px;
     background-color: #1C768F;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(200, 17, 17, 0.08);
-    max-width: 500px;
+    padding: 30px 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    max-width: 450px;
+    min-height: 500px;
 }
 
 .site-title {
     font-weight: 600;
-    font-size: 1.4rem;
-    margin: 0 0 8px 0;
+    font-size: 2rem;
+    margin: 0 0 15px 0;
     color: #FBF3F2;
 }
 
 .site-subtitle {
     font-weight: 300;
-    font-size: 1.5rem;
-    line-height: 1.5;
+    font-size: 1.3rem;
+    line-height: 1.6;
     color: #FBF3F2;
-    margin: 0;
+    margin: 0 0 35px 0;
+}
+
+.examples-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #FA991C;
+}
+
+.examples-section h3 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin: 0 0 18px 0;
+    color: #FBF3F2;
+}
+
+.examples-section p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #FBF3F2;
+    margin: 0 0 12px 0;
+}
+
+.examples-section code {
+    background-color: #032539;
+    color: #FA991C;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .query-card {
@@ -105,42 +137,6 @@ th, td {
     margin-top: 20px;
 }
 
-.examples-card {
-    position: absolute;
-    top: 400px; /* justo debajo del header */
-    left: 20px;
-    background-color: #1C768F;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    max-width: 500px;
-    font-size: 1.5rem;
-    font-weight: 300;
-}
-
-.examples-card h3 {
-    margin-top: 0;
-    font-weight: 500;
-}
-
-.examples-card ul {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 8px;
-}
-
-.examples-card li {
-    margin-bottom: 6px;
-}
-
-.examples-card code {
-    background-color: #f4f4f4;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.85rem;
-}
-
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -152,9 +148,6 @@ th, td {
         opacity: 1;
         transform: translateY(0);
     }
-}
-.examples-card.fade-in {
-    animation-delay: 0.5s;
 }
 
 .slide-up {

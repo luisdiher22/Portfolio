@@ -170,14 +170,14 @@ function switchLanguage(lang) {
       ? "Siempre me ha fascinado SQL y cómo todo en la vida puede interpretarse como una consulta.<br>¡Así que decidí que las personas se diviertan practicando consultas SQL!"
       : "I have always been fond of SQL and how everything in life can be interpreted as a query,<br>so I decided: let's have people dust off their SQL skills by doing some queries! Have fun!";
 
-  const exampleTitle = document.querySelector(".examples-card h3");
+  const exampleTitle = document.querySelector(".examples-section h3");
   if (exampleTitle) {
     exampleTitle.textContent =
       lang === "es"
         ? "Sistema de cartas:"
         : "Card system:";
   }
-  const exampleTexts = document.querySelectorAll(".examples-card p");
+  const exampleTexts = document.querySelectorAll(".examples-section p");
 if (exampleTexts.length >= 2) {
   exampleTexts[0].textContent = lang === "es"
     ? "Todo lo que está disponible en este portafolio está accesible mediante un sistema de tarjetas."
@@ -188,7 +188,7 @@ if (exampleTexts.length >= 2) {
     : "Click on the cards below to see more details about each section.";
 }
 
-  const listItems = document.querySelectorAll(".examples-card li");
+  const listItems = document.querySelectorAll(".examples-section li");
   if (listItems.length >= 4) {
     listItems[0].textContent =
       lang === "es" ? "Mis proyectos y sus descripciones." : "My projects and their descriptions.";
