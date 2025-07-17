@@ -7,16 +7,6 @@
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <!-- Floating decorative elements -->
-    <div class="floating-elements">
-        <div class="floating-circle circle-1"></div>
-        <div class="floating-circle circle-2"></div>
-        <div class="floating-circle circle-3"></div>
-        <div class="floating-square square-1"></div>
-        <div class="floating-square square-2"></div>
-        <div class="floating-triangle triangle-1"></div>
-    </div>
-
     <div id="lang-toggle">
   <label class="switch">
     <input type="checkbox" id="langSwitch">
@@ -127,88 +117,35 @@
         <div id="results"></div>
     </div>
 </div>
-<!-- Chibi Tutorial Helper -->
-<div id="chibi-helper">
-    <div id="chibi-character">
-        <div class="chibi-face">🤖</div>
-        <div class="chibi-speech-bubble">
-            <div class="bubble-text">
-                <span id="chibi-message">You have no idea what they're talking about? Click me!</span>
-            </div>
-            <div class="bubble-tail"></div>
-        </div>
+    
+<div id="cue-wrapper" class="collapsed">
+  <div id="cue-toggle-bar">
+    <button id="toggle-cue" aria-label="Mostrar tarjetas">
+      <span class="cue-label">¿No sabes de SQL?</span> ▲
+    </button>
+  </div>
+  <div id="cue-box">
+    <h2 class="sql-help-title">¿Qué es SQL?</h2>
+    <div class="sql-cue-column">
+      <div class="cue-level" data-content="sql" data-level="1"> ¿Qué es SQL?</div>
+      <div class="cue-level locked" data-content="table" data-level="2"> ¿Qué es una tabla?</div>
+      <div class="cue-level locked" data-content="query" data-level="3"> ¿Qué es un query?</div>
+      <div class="cue-level locked" data-content="structure" data-level="4"> ¿Cuál es la estructura de un query?</div>
+      <div class="cue-level locked" data-content="select" data-level="5"> ¿Qué hace SELECT?</div>
+      <div class="cue-level locked" data-content="asterisk" data-level="6"> ¿Qué significa el asterisco (*)?</div>
+      <div class="cue-level locked" data-content="from" data-level="7"> ¿Qué hace FROM?</div>
+      <div class="cue-level locked" data-content="where" data-level="8"> ¿Y WHERE?</div>
+      <div class="cue-level locked" data-content="operators" data-level="9"> Operadores de comparación (&lt;&gt;, =, &gt;, &lt;)</div>
+      <div class="cue-level locked" data-content="querypractice1" data-level="10"> Práctica 1: Consulta simple</div>
+      <div class="cue-level locked" data-content="querypractice2" data-level="11"> Práctica 2: Filtrado</div>
     </div>
+  </div>
 </div>
 
-<!-- Tutorial Mode Overlay -->
-<div id="tutorial-overlay" class="hidden">
-    <!-- Tutorial Sidebar -->
-    <div id="tutorial-sidebar">
-        <div class="sidebar-header">
-            <h2>SQL Tutorial</h2>
-            <button id="close-tutorial" class="close-tutorial-btn">×</button>
-        </div>
-        <div class="tutorial-cards-container">
-            <div class="tutorial-card" data-content="sql" data-level="1">
-                <div class="tutorial-card-icon">📚</div>
-                <div class="tutorial-card-title">¿Qué es SQL?</div>
-            </div>
-            <div class="tutorial-card locked" data-content="table" data-level="2">
-                <div class="tutorial-card-icon">📊</div>
-                <div class="tutorial-card-title">¿Qué es una tabla?</div>
-            </div>
-            <div class="tutorial-card locked" data-content="query" data-level="3">
-                <div class="tutorial-card-icon">❓</div>
-                <div class="tutorial-card-title">¿Qué es un query?</div>
-            </div>
-            <div class="tutorial-card locked" data-content="structure" data-level="4">
-                <div class="tutorial-card-icon">🏗️</div>
-                <div class="tutorial-card-title">Estructura de un query</div>
-            </div>
-            <div class="tutorial-card locked" data-content="select" data-level="5">
-                <div class="tutorial-card-icon">🔍</div>
-                <div class="tutorial-card-title">¿Qué hace SELECT?</div>
-            </div>
-            <div class="tutorial-card locked" data-content="asterisk" data-level="6">
-                <div class="tutorial-card-icon">⭐</div>
-                <div class="tutorial-card-title">El asterisco (*)</div>
-            </div>
-            <div class="tutorial-card locked" data-content="from" data-level="7">
-                <div class="tutorial-card-icon">📍</div>
-                <div class="tutorial-card-title">¿Qué hace FROM?</div>
-            </div>
-            <div class="tutorial-card locked" data-content="where" data-level="8">
-                <div class="tutorial-card-icon">🎯</div>
-                <div class="tutorial-card-title">¿Y WHERE?</div>
-            </div>
-            <div class="tutorial-card locked" data-content="operators" data-level="9">
-                <div class="tutorial-card-icon">⚖️</div>
-                <div class="tutorial-card-title">Operadores de comparación</div>
-            </div>
-            <div class="tutorial-card locked" data-content="querypractice1" data-level="10">
-                <div class="tutorial-card-icon">🎯</div>
-                <div class="tutorial-card-title">Práctica 1: Consulta simple</div>
-            </div>
-            <div class="tutorial-card locked" data-content="querypractice2" data-level="11">
-                <div class="tutorial-card-icon">🔎</div>
-                <div class="tutorial-card-title">Práctica 2: Filtrado</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Tutorial Content Area -->
-    <div id="tutorial-content-area">
-        <div id="tutorial-content">
-            <h2 id="tutorial-title">Selecciona un tema del tutorial</h2>
-            <div id="tutorial-body">
-                <p>Haz clic en cualquiera de las tarjetas de la izquierda para comenzar a aprender SQL paso a paso.</p>
-            </div>
-            <div id="tutorial-navigation">
-                <button id="prev-tutorial" class="tutorial-nav-btn" disabled>← Anterior</button>
-                <button id="next-tutorial" class="tutorial-nav-btn" disabled>Siguiente →</button>
-            </div>
-        </div>
-    </div>
+<div id="cue-detail" class="hidden">
+    <button id="close-cue" class="close-btn" aria-label="Close">X</button>
+    <div id="cue-content"></div>
+    <button id="next-cue" class="next-btn">Siguiente →</button>
 </div>
    
 
