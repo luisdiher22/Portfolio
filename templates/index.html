@@ -2,28 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <!-- Floating decorative elements -->
-    <div class="floating-elements">
-        <div class="floating-circle circle-1"></div>
-        <div class="floating-circle circle-2"></div>
-        <div class="floating-circle circle-3"></div>
-        <div class="floating-square square-1"></div>
-        <div class="floating-square square-2"></div>
-        <div class="floating-triangle triangle-1"></div>
+    <!-- Language Selection Popup -->
+    <div id="language-popup" class="language-popup-overlay">
+        <div class="language-popup-content">
+            <h2>Choose Your Language</h2>
+            <p>Elige tu idioma</p>
+            <div class="language-options">
+                <button class="language-btn" data-lang="en">
+                    <span class="flag">🇺🇸</span>
+                    <span class="lang-name">English</span>
+                </button>
+                <button class="language-btn" data-lang="es">
+                    <span class="flag">🇪🇸</span>
+                    <span class="lang-name">Español</span>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div id="lang-toggle">
-  <label class="switch">
-    <input type="checkbox" id="langSwitch">
-    <span class="slider round"></span>
-  </label>
-  <span id="lang-label">EN</span>
-</div>
+    <!-- Main Content Wrapper -->
+    <div class="main-content">
+        <!-- Floating decorative elements -->
+        <div class="floating-elements">
+            <div class="floating-circle circle-1"></div>
+            <div class="floating-circle circle-2"></div>
+            <div class="floating-circle circle-3"></div>
+            <div class="floating-square square-1"></div>
+            <div class="floating-square square-2"></div>
+            <div class="floating-triangle triangle-1"></div>
+        </div>
+
+        <div id="lang-toggle">
+      <label class="switch">
+        <input type="checkbox" id="langSwitch">
+        <span class="slider round"></span>
+      </label>
+      <span id="lang-label">EN</span>
+    </div>
 
 
     <header class="intro-card fade-in">
@@ -130,7 +151,19 @@
 <!-- Chibi Tutorial Helper -->
 <div id="chibi-helper">
     <div id="chibi-character">
-        <div class="chibi-face">🤖</div>
+        <div class="chibi-head">
+            <div class="chibi-eyes">
+                <div class="eye left-eye">👁</div>
+                <div class="eye right-eye">👁</div>
+            </div>
+            <div class="chibi-mouth">😊</div>
+        </div>
+        <div class="chibi-body">
+            <div class="chibi-arms">
+                <div class="arm left-arm">🖐</div>
+                <div class="arm right-arm">🖐</div>
+            </div>
+        </div>
         <div class="chibi-speech-bubble">
             <div class="bubble-text">
                 <span id="chibi-message">You have no idea what they're talking about? Click me!</span>
@@ -239,6 +272,8 @@
     <button id="close-card" class="close-btn" aria-label="Close">X</button>
     <div id="card-content"></div>
 </div>
+
+</div> <!-- Close main-content -->
 
  <script src="static/script.js"></script>
 </body>

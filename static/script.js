@@ -1,5 +1,123 @@
 // Idioma actual (default: inglés)
 let currentLang = "en";
+let languageSelected = false;
+
+// Initialize language popup on page load
+document.addEventListener('DOMContentLoaded', function() {
+    showLanguagePopup();
+    
+    // Keep existing functionality
+    updateBuilderDisplay();
+    setupBuilderControls();
+    
+    // Don't initialize tutorial system here - wait for language selection
+});
+
+function showLanguagePopup() {
+    const languagePopup = document.getElementById('language-popup');
+    const languageButtons = document.querySelectorAll('.language-btn');
+    
+    // Show popup
+    languagePopup.classList.remove('hidden');
+    
+    // Add event listeners to language buttons
+    languageButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const selectedLang = this.getAttribute('data-lang');
+            selectLanguage(selectedLang);
+        });
+    });
+}
+
+function selectLanguage(lang) {
+    const languagePopup = document.getElementById('language-popup');
+    const body = document.querySelector('body');
+    const mainContent = document.querySelector('.main-content');
+    const langSwitch = document.getElementById('langSwitch');
+    const langLabel = document.getElementById('lang-label');
+    
+    // Set selected language
+    currentLang = lang;
+    languageSelected = true;
+    
+    // Update language switch to match selection
+    if (langSwitch) {
+        langSwitch.checked = (lang === 'es');
+    }
+    if (langLabel) {
+        langLabel.textContent = lang.toUpperCase();
+    }
+    
+    // Hide popup with animation
+    languagePopup.classList.add('hidden');
+    
+    // Remove blur from main content
+    setTimeout(() => {
+        if (mainContent) {
+            mainContent.classList.add('language-selected');
+        }
+        body.classList.add('language-selected');
+    }, 100);
+    
+    // Apply language changes
+    switchLanguage(lang);
+    
+    // Ensure cards are properly positioned after language selection
+    setTimeout(() => {
+        const cardHand = document.getElementById('card-hand');
+        if (cardHand) {
+            cardHand.style.transform = 'translateX(-50%) translateY(0)';
+            cardHand.style.opacity = '1';
+        }
+    }, 300);
+    
+    // Initialize tutorial system after language selection
+    setTimeout(() => {
+        initializeTutorialSystem();
+    }, 200);
+    
+    // Remove popup from DOM after animation
+    setTimeout(() => {
+        languagePopup.remove();
+    }, 600);
+}
+
+const builderTexts = {
+  en: {
+    placeholderText: "Click blocks below to build your query...",
+    clearButton: "Clear",
+    useBuilderButton: "Use Builder", 
+    useTextButton: "Use Text",
+    enterButton: "Enter",
+    sqlBlocks: "SQL Blocks:",
+    commands: "Commands:",
+    tables: "Tables:",
+    common: "Common:",
+    values: "Values:",
+    addText: "Add Text",
+    addNumber: "Add Number",
+    textPlaceholder: "SELECT * FROM projects;",
+    executingQuery: "Executing query...",
+    queryResults: "Query Results"
+  },
+  es: {
+    placeholderText: "Haz clic en los bloques de abajo para construir tu consulta...",
+    clearButton: "Limpiar",
+    useBuilderButton: "Usar Constructor",
+    useTextButton: "Usar Texto", 
+    enterButton: "Ejecutar",
+    sqlBlocks: "Bloques SQL:",
+    commands: "Comandos:",
+    tables: "Tablas:",
+    common: "Común:",
+    values: "Valores:",
+    addText: "Agregar Texto",
+    addNumber: "Agregar Número",
+    textPlaceholder: "SELECT * FROM projects;",
+    executingQuery: "Ejecutando consulta...",
+    queryResults: "Resultados de la Consulta"
+  }
+};
 
 const cardTexts = {
   en: {
@@ -285,10 +403,19 @@ overlay.addEventListener("click", () => {
 const langSwitch = document.getElementById("langSwitch");
 const langLabel = document.getElementById("lang-label");
 
-langSwitch.addEventListener("change", () => {
-  currentLang = langSwitch.checked ? "es" : "en";
-  langLabel.textContent = currentLang.toUpperCase();
-  switchLanguage(currentLang);
+// Only add switch listener after language has been initially selected
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        if (langSwitch) {
+            langSwitch.addEventListener("change", () => {
+                if (languageSelected) { // Only allow changes after initial selection
+                    currentLang = langSwitch.checked ? "es" : "en";
+                    langLabel.textContent = currentLang.toUpperCase();
+                    switchLanguage(currentLang);
+                }
+            });
+        }
+    }, 1000);
 });
 
 function switchLanguage(lang) {
@@ -395,6 +522,9 @@ if (exampleTexts.length >= 2) {
       title.textContent = cardTitles[lang][index];
     }
   });
+
+  // Update query builder interface
+  updateBuilderLanguage(lang);
   
   // Update new tutorial system
   updateTutorialLanguage();
@@ -416,7 +546,13 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTutorialSystem();
 });
 
+// Initialize new tutorial system
 function initializeTutorialSystem() {
+    // Only initialize if language has been selected
+    if (!languageSelected) {
+        return;
+    }
+    
     const chibiHelper = document.getElementById('chibi-helper');
     const tutorialOverlay = document.getElementById('tutorial-overlay');
     const closeTutorialBtn = document.getElementById('close-tutorial');
@@ -764,11 +900,67 @@ function getBlockType(value) {
     return 'default';
 }
 
+function updateBuilderLanguage(lang) {
+  const texts = builderTexts[lang];
+  
+  // Update placeholder text
+  const queryDisplay = document.getElementById('queryDisplay');
+  if (queryDisplay && queryDisplay.querySelector('.placeholder-text')) {
+    queryDisplay.querySelector('.placeholder-text').textContent = texts.placeholderText;
+  }
+  
+  // Update buttons
+  const clearButton = document.getElementById('clearQuery');
+  if (clearButton) clearButton.textContent = texts.clearButton;
+  
+  const useBuilderButton = document.getElementById('useBuilder');
+  if (useBuilderButton) useBuilderButton.textContent = texts.useBuilderButton;
+  
+  const useTextButton = document.getElementById('useTextarea');
+  if (useTextButton) useTextButton.textContent = texts.useTextButton;
+  
+  const enterButton = document.querySelector('button[type="submit"]');
+  if (enterButton) enterButton.textContent = texts.enterButton;
+  
+  // Update textarea placeholder
+  const queryBox = document.getElementById('queryBox');
+  if (queryBox) queryBox.placeholder = texts.textPlaceholder;
+  
+  // Update category labels
+  const categoryLabels = document.querySelectorAll('.category-label');
+  const categoryTexts = [texts.commands, texts.tables, texts.common, texts.values];
+  categoryLabels.forEach((label, index) => {
+    if (categoryTexts[index]) {
+      label.textContent = categoryTexts[index];
+    }
+  });
+  
+  // Update block pool title
+  const blockPoolTitle = document.querySelector('#blockPool h4');
+  if (blockPoolTitle) blockPoolTitle.textContent = texts.sqlBlocks;
+  
+  // Update input blocks
+  const inputBlocks = document.querySelectorAll('.input-block');
+  inputBlocks.forEach((block, index) => {
+    if (index === 0) block.textContent = texts.addText;
+    if (index === 1) block.textContent = texts.addNumber;
+  });
+  
+  // Update loading text
+  const loadingText = document.querySelector('.loading-text');
+  if (loadingText) loadingText.textContent = texts.executingQuery;
+  
+  // Update results card title
+  const resultsTitle = document.querySelector('#resultsCard h3');
+  if (resultsTitle) resultsTitle.textContent = texts.queryResults;
+}
+
 function updateBuilderDisplay() {
     const queryDisplay = document.getElementById('queryDisplay');
     
     if (queryBlocks.length === 0) {
-        queryDisplay.innerHTML = '<span class="placeholder-text">Click blocks below to build your query...</span>';
+        const placeholderText = builderTexts[currentLang].placeholderText;
+        queryDisplay.innerHTML = `<span class="placeholder-text">${placeholderText}</span>`;
         queryDisplay.classList.remove('active');
     } else {
         queryDisplay.classList.add('active');
@@ -1034,7 +1226,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function createInputBlock(element, type) {
-    const value = prompt(`Enter ${type} value:`);
+    const isMobile = window.innerWidth <= 767;
+    const promptText = type === 'text' ? 
+        (currentLang === 'es' ? 'Ingrese valor de texto:' : 'Enter text value:') :
+        (currentLang === 'es' ? 'Ingrese valor numérico:' : 'Enter number value:');
+    
+    const value = prompt(promptText);
     if (value !== null && value.trim() !== '') {
         let formattedValue = value.trim();
         if (type === 'text') {
@@ -1183,6 +1380,64 @@ function revealAnswer(button) {
     answerDiv.style.display = "block";
     button.style.display = "none";
 }
+
+// Responsive helper functions
+function checkScreenSize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    // Mobile
+    if (width <= 767) {
+        document.body.classList.add('mobile');
+        document.body.classList.remove('tablet', 'desktop');
+        return 'mobile';
+    }
+    // Tablet
+    else if (width <= 1023) {
+        document.body.classList.add('tablet');
+        document.body.classList.remove('mobile', 'desktop');
+        return 'tablet';
+    }
+    // Desktop
+    else {
+        document.body.classList.add('desktop');
+        document.body.classList.remove('mobile', 'tablet');
+        return 'desktop';
+    }
+}
+
+// Handle window resize
+function handleResize() {
+    checkScreenSize();
+    
+    // Adjust card positioning on resize
+    const cardHand = document.getElementById('card-hand');
+    if (cardHand) {
+        cardHand.style.transform = 'translateX(-50%) translateY(0)';
+        cardHand.style.opacity = '1';
+    }
+    
+    // Adjust tutorial system if open
+    const tutorialOverlay = document.getElementById('tutorial-overlay');
+    if (tutorialOverlay && !tutorialOverlay.classList.contains('hidden')) {
+        // Recalculate tutorial layout on resize
+        setTimeout(() => {
+            const screenType = checkScreenSize();
+            if (screenType === 'mobile') {
+                // Mobile-specific tutorial adjustments
+                const sidebar = document.getElementById('tutorial-sidebar');
+                const content = document.getElementById('tutorial-content');
+                if (sidebar) sidebar.style.width = '100%';
+                if (content) content.style.width = '100%';
+            }
+        }, 100);
+    }
+}
+
+// Initialize responsive behavior
+window.addEventListener('load', checkScreenSize);
+window.addEventListener('resize', handleResize);
+
 function resetToOriginalLayout() {
   const container = document.querySelector('.container');
   const queryCard = document.querySelector('.query-card');
