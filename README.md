@@ -23,8 +23,8 @@ Un portafolio web interactivo que permite explorar la información profesional m
 
 1. **Clona el repositorio**:
    ```bash
-   git clone https://github.com/tuusuario/portfolio.git
-   cd portfolio
+   git clone https://github.com/luisdiher22/Portfolio.git
+   cd Portfolio
    ```
 
 2. **Crea un entorno virtual**:
@@ -51,11 +51,16 @@ Un portafolio web interactivo que permite explorar la información profesional m
 ## 📁 Estructura del Proyecto
 
 ```
-portfolio/
+Portfolio/
 ├── app.py                 # Aplicación Flask principal
+├── config.py             # Configuración centralizada
 ├── portfolio.db          # Base de datos SQLite
 ├── requirements.txt      # Dependencias Python
 ├── runtime.txt          # Versión Python para deploy
+├── .env.example         # Variables de entorno ejemplo
+├── .gitignore           # Archivos ignorados por Git
+├── LICENSE              # Licencia MIT
+├── README.md            # Documentación del proyecto
 ├── static/
 │   ├── script.js        # Lógica JavaScript
 │   └── styles.css       # Estilos CSS
@@ -186,12 +191,30 @@ Las contribuciones son bienvenidas:
 
 ## 📋 Roadmap
 
+### 🔧 Mejoras Técnicas
 - [ ] Exportar resultados a CSV/JSON
-- [ ] Historial de consultas
-- [ ] Más tipos de gráficos
-- [ ] Integración con APIs externas
-- [ ] Sistema de usuarios
-- [ ] Consultas guardadas
+- [ ] Historial de consultas con persistencia
+- [ ] Cache de consultas frecuentes
+- [ ] Tests automatizados (unittest/pytest)
+- [ ] Integración continua (GitHub Actions)
+
+### 🎨 Funcionalidades
+- [ ] Más tipos de gráficos y visualizaciones
+- [ ] Sistema de usuarios con autenticación
+- [ ] Consultas guardadas y favoritas
+- [ ] Modo oscuro/claro
+- [ ] Búsqueda avanzada en resultados
+
+### 🔗 Integraciones
+- [ ] APIs externas (GitHub, LinkedIn)
+- [ ] Webhooks para actualizaciones automáticas
+- [ ] Integración con bases de datos externas
+- [ ] Exportación a diferentes formatos
+
+### 📱 Móvil
+- [ ] App móvil nativa
+- [ ] Gestos táctiles mejorados
+- [ ] Modo offline básico
 
 ## 🐛 Reportar Errores
 
@@ -210,9 +233,9 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 ## 👨‍💻 Autor
 
 **Luis Diego** - Desarrollador Full Stack
-- Portfolio: [tu-sitio-web.com](https://tu-sitio-web.com)
-- LinkedIn: [tu-linkedin](https://linkedin.com/in/tu-perfil)
-- GitHub: [tu-github](https://github.com/tu-usuario)
+- Portfolio: [luisdiher22.github.io](https://luisdiher22.github.io)
+- LinkedIn: [linkedin.com/in/luisdiher22](https://linkedin.com/in/luisdiher22)
+- GitHub: [github.com/luisdiher22](https://github.com/luisdiher22)
 
 ## 🙏 Agradecimientos
 

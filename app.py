@@ -9,7 +9,25 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 import re
 import logging
+import os
 from typing import Dict, Any, Tuple
+
+# Import configuration
+try:
+    from config import config
+except ImportError:
+    # Fallback configuration if config.py doesn't exist
+    class Config:
+        DATABASE_URL = 'portfolio.db'
+        MAX_QUERY_LENGTH = 1000
+        MAX_RESULTS = 100
+        ALLOWED_SQL_OPERATIONS = {'SELECT', 'WITH', 'FROM', 'WHERE', 'JOIN', 'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'UNION', 'INTERSECT', 'EXCEPT'}
+        BLOCKED_SQL_OPERATIONS = {'DROP', 'DELETE', 'UPDATE', 'INSERT', 'ALTER', 'CREATE', 'TRUNCATE', 'REPLACE', 'MERGE', 'EXEC', 'EXECUTE'}
+        DEBUG = True
+        HOST = '127.0.0.1'
+        PORT = 5000
+    
+    config = {'default': Config}
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -17,15 +35,23 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Constants
-DB_PATH = 'portfolio.db'
-ALLOWED_KEYWORDS = {
+# Load configuration
+env = os.environ.get('FLASK_ENV', 'default')
+app_config = config.get(env, config['default'])
+
+# Constants from configuration
+DB_PATH = getattr(app_config, 'DATABASE_URL', 'portfolio.db')
+ALLOWED_KEYWORDS = getattr(app_config, 'ALLOWED_SQL_OPERATIONS', {
     'SELECT', 'FROM', 'WHERE', 'ORDER BY', 'GROUP BY', 'HAVING', 
     'LIMIT', 'OFFSET', 'JOIN', 'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN',
     'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'DISTINCT'
-}
+})
+BLOCKED_KEYWORDS = getattr(app_config, 'BLOCKED_SQL_OPERATIONS', {
+    'DROP', 'DELETE', 'UPDATE', 'INSERT', 'ALTER', 'CREATE', 
+    'TRUNCATE', 'REPLACE', 'MERGE', 'EXEC', 'EXECUTE'
+})
 ALLOWED_TABLES = {'projects', 'skills', 'education', 'experience', 'clients'}
-MAX_QUERY_LENGTH = 1000
+MAX_QUERY_LENGTH = getattr(app_config, 'MAX_QUERY_LENGTH', 1000)
 
 def validate_sql_query(query: str) -> Tuple[bool, str]:
     """
@@ -47,8 +73,7 @@ def validate_sql_query(query: str) -> Tuple[bool, str]:
     query_upper = query.upper()
     
     # Block dangerous keywords
-    dangerous_keywords = ['DROP', 'DELETE', 'UPDATE', 'INSERT', 'CREATE', 'ALTER', 'TRUNCATE', 'GRANT', 'REVOKE']
-    for keyword in dangerous_keywords:
+    for keyword in BLOCKED_KEYWORDS:
         if keyword in query_upper:
             return False, f"Operation '{keyword}' is not allowed"
     
@@ -176,4 +201,14 @@ def method_not_allowed(error) -> Tuple[Dict[str, str], int]:
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host='127.0.0.1', port=5000)
+    # Get configuration values
+    debug = getattr(app_config, 'DEBUG', False)
+    host = getattr(app_config, 'HOST', '127.0.0.1')
+    port = getattr(app_config, 'PORT', 5000)
+    
+    # Override with environment variables if present
+    debug = os.environ.get('FLASK_DEBUG', str(debug)).lower() == 'true'
+    host = os.environ.get('HOST', host)
+    port = int(os.environ.get('PORT', port))
+    
+    app.run(debug=debug, host=host, port=port)

@@ -9,12 +9,114 @@
 let currentLang = "en";
 let languageSelected = false;
 
+// PWA variables
+let deferredPrompt;
+let isOnline = navigator.onLine;
+
 // Initialize application on page load
 document.addEventListener('DOMContentLoaded', function() {
+    initializePWA();
     showLanguagePopup();
     updateBuilderDisplay();
     setupBuilderControls();
+    setupNetworkStatusHandlers();
 });
+
+/**
+ * Initialize Progressive Web App functionality
+ */
+function initializePWA() {
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/static/sw.js')
+            .then(registration => {
+                console.log('Service Worker registered:', registration);
+            })
+            .catch(error => {
+                console.log('Service Worker registration failed:', error);
+            });
+    }
+    
+    // Handle install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallButton();
+    });
+    
+    // Handle successful installation
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA installed successfully');
+        hideInstallButton();
+    });
+}
+
+/**
+ * Show install button for PWA
+ */
+function showInstallButton() {
+    const installButton = document.getElementById('install-button');
+    if (installButton) {
+        installButton.style.display = 'block';
+        installButton.addEventListener('click', handleInstallClick);
+    }
+}
+
+/**
+ * Hide install button
+ */
+function hideInstallButton() {
+    const installButton = document.getElementById('install-button');
+    if (installButton) {
+        installButton.style.display = 'none';
+    }
+}
+
+/**
+ * Handle install button click
+ */
+async function handleInstallClick() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log('Install prompt outcome:', outcome);
+        deferredPrompt = null;
+        hideInstallButton();
+    }
+}
+
+/**
+ * Setup network status handlers
+ */
+function setupNetworkStatusHandlers() {
+    window.addEventListener('online', () => {
+        isOnline = true;
+        showNetworkStatus('online');
+    });
+    
+    window.addEventListener('offline', () => {
+        isOnline = false;
+        showNetworkStatus('offline');
+    });
+}
+
+/**
+ * Show network status message
+ * @param {string} status - 'online' or 'offline'
+ */
+function showNetworkStatus(status) {
+    const statusElement = document.getElementById('network-status');
+    if (statusElement) {
+        statusElement.textContent = status === 'online' ? 'Back online' : 'Working offline';
+        statusElement.className = `network-status ${status}`;
+        statusElement.style.display = 'block';
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            statusElement.style.display = 'none';
+        }, 3000);
+    }
+}
 
 /**
  * Show the language selection popup
@@ -95,6 +197,176 @@ function selectLanguage(lang) {
             languagePopup.remove();
         }
     }, 600);
+}
+
+/**
+ * Validate user input for security and basic SQL structure
+ * @param {string} query - SQL query to validate
+ * @returns {Object} - Validation result with isValid boolean and message
+ */
+function validateQuery(query) {
+    if (!query || typeof query !== 'string') {
+        return { isValid: false, message: 'Query must be a non-empty string' };
+    }
+    
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length === 0) {
+        return { isValid: false, message: 'Query cannot be empty' };
+    }
+    
+    if (trimmedQuery.length > 1000) {
+        return { isValid: false, message: 'Query too long (max 1000 characters)' };
+    }
+    
+    // Basic SQL injection prevention (client-side, server validates too)
+    const dangerousPatterns = [
+        /;\s*(drop|delete|update|insert|alter|create|truncate)\s+/i,
+        /union\s+select/i,
+        /--/,
+        /\/\*/,
+        /\*\//
+    ];
+    
+    for (const pattern of dangerousPatterns) {
+        if (pattern.test(trimmedQuery)) {
+            return { isValid: false, message: 'Query contains potentially dangerous operations' };
+        }
+    }
+    
+    return { isValid: true, message: 'Query is valid' };
+}
+
+/**
+ * Performance optimizations and caching
+ */
+const performanceUtils = {
+    // Cache DOM elements
+    cache: new Map(),
+    
+    // Get cached element or query and cache
+    getCachedElement(selector) {
+        if (this.cache.has(selector)) {
+            return this.cache.get(selector);
+        }
+        const element = document.querySelector(selector);
+        if (element) {
+            this.cache.set(selector, element);
+        }
+        return element;
+    },
+    
+    // Clear cache
+    clearCache() {
+        this.cache.clear();
+    },
+    
+    // Measure performance
+    measurePerformance(name, fn) {
+        const start = performance.now();
+        const result = fn();
+        const end = performance.now();
+        console.log(`${name} took ${end - start} milliseconds`);
+        return result;
+    },
+    
+    // Throttle function calls
+    throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+};
+
+/**
+ * Intersection Observer for lazy loading
+ */
+const lazyLoadObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const target = entry.target;
+            if (target.dataset.src) {
+                target.src = target.dataset.src;
+                target.removeAttribute('data-src');
+            }
+            lazyLoadObserver.unobserve(target);
+        }
+    });
+});
+
+/**
+ * Initialize lazy loading for images
+ */
+function initializeLazyLoading() {
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    lazyImages.forEach(img => {
+        lazyLoadObserver.observe(img);
+    });
+}
+
+/**
+ * Safely execute fetch requests with error handling
+ * @param {string} url - Request URL
+ * @param {Object} options - Fetch options
+ * @returns {Promise} - Promise that resolves to response data
+ */
+async function safeFetch(url, options = {}) {
+    try {
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
+        
+        // Try to return cached data if available and offline
+        if (!isOnline && 'caches' in window) {
+            try {
+                const cache = await caches.open('sql-portfolio-v1');
+                const cachedResponse = await cache.match(url);
+                if (cachedResponse) {
+                    return await cachedResponse.json();
+                }
+            } catch (cacheError) {
+                console.error('Cache error:', cacheError);
+            }
+        }
+        
+        throw error;
+    }
+}
+
+/**
+ * Debounce function to limit function calls
+ * @param {Function} func - Function to debounce
+ * @param {number} wait - Wait time in milliseconds
+ * @returns {Function} - Debounced function
+ */
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 const builderTexts = {
@@ -432,6 +704,68 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 1000);
 });
+
+/**
+ * Safely select DOM elements with error handling
+ * @param {string} selector - CSS selector
+ * @param {Element} parent - Parent element (optional)
+ * @returns {Element|null} - Selected element or null
+ */
+function safeQuerySelector(selector, parent = document) {
+    try {
+        return parent.querySelector(selector);
+    } catch (error) {
+        console.error(`Error selecting element with selector "${selector}":`, error);
+        return null;
+    }
+}
+
+/**
+ * Safely select multiple DOM elements with error handling
+ * @param {string} selector - CSS selector
+ * @param {Element} parent - Parent element (optional)
+ * @returns {NodeList} - Selected elements
+ */
+function safeQuerySelectorAll(selector, parent = document) {
+    try {
+        return parent.querySelectorAll(selector);
+    } catch (error) {
+        console.error(`Error selecting elements with selector "${selector}":`, error);
+        return [];
+    }
+}
+
+/**
+ * Switch the language of the website
+ * @param {string} lang - Language code ('en' or 'es')
+ */
+function switchLanguage(lang) {
+    if (!lang || !['en', 'es'].includes(lang)) {
+        console.error('Invalid language code:', lang);
+        return;
+    }
+    
+    currentLang = lang;
+    const elementsToTranslate = safeQuerySelectorAll('[data-en][data-es]');
+    
+    elementsToTranslate.forEach(element => {
+        const translation = element.getAttribute(`data-${lang}`);
+        if (translation) {
+            element.textContent = translation;
+        }
+    });
+    
+    // Update language switch
+    const langSwitch = safeQuerySelector('#langSwitch');
+    const langLabel = safeQuerySelector('#lang-label');
+    
+    if (langSwitch) {
+        langSwitch.checked = (lang === 'es');
+    }
+    if (langLabel) {
+        langLabel.textContent = lang.toUpperCase();
+    }
+}
 
 function switchLanguage(lang) {
   document.querySelector(".site-title").textContent =
@@ -1281,7 +1615,114 @@ function createInputBlock(element, type) {
     }
 }
 
-// Handle SQL query form submission
+/**
+ * Handle SQL query form submission with proper validation and error handling
+ */
+document.getElementById("queryForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    
+    let query;
+    if (isBuilderMode) {
+        query = queryBlocks.map(block => block.value).join(' ');
+    } else {
+        query = document.getElementById('queryBox').value;
+    }
+    
+    // Validate query
+    const validation = validateQuery(query);
+    if (!validation.isValid) {
+        showError(validation.message);
+        return;
+    }
+    
+    // Show loading state
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) {
+        loadingOverlay.style.display = 'flex';
+        
+        // Reset loading bar animation
+        const loadingProgress = document.querySelector('.loading-progress');
+        if (loadingProgress) {
+            loadingProgress.style.animation = 'none';
+            loadingProgress.offsetHeight; // Trigger reflow
+            loadingProgress.style.animation = 'loadingAnimation 2s ease-in-out forwards, gradientShift 2s ease-in-out infinite';
+        }
+    }
+    
+    try {
+        // Wait for loading animation then send request
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        const data = await safeFetch('/query', {
+            method: 'POST',
+            body: JSON.stringify({ query: query })
+        });
+        
+        // Handle successful response
+        handleQueryResults(data);
+        
+    } catch (error) {
+        console.error('Query submission error:', error);
+        showError('Failed to execute query. Please try again.');
+    } finally {
+        // Hide loading overlay
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'none';
+        }
+    }
+});
+
+/**
+ * Display error messages to user
+ * @param {string} message - Error message to display
+ */
+function showError(message) {
+    // Create or update error display
+    let errorDiv = document.getElementById('error-message');
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.id = 'error-message';
+        errorDiv.className = 'error-message';
+        errorDiv.setAttribute('role', 'alert');
+        errorDiv.setAttribute('aria-live', 'polite');
+        
+        const queryForm = document.getElementById('queryForm');
+        queryForm.insertAdjacentElement('afterend', errorDiv);
+    }
+    
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        if (errorDiv) {
+            errorDiv.style.display = 'none';
+        }
+    }, 5000);
+}
+
+/**
+ * Handle and display query results
+ * @param {Object} data - Response data from server
+ */
+function handleQueryResults(data) {
+    if (!data || typeof data !== 'object') {
+        showError('Invalid response from server');
+        return;
+    }
+    
+    // Clear any existing error messages
+    const errorDiv = document.getElementById('error-message');
+    if (errorDiv) {
+        errorDiv.style.display = 'none';
+    }
+    
+    // Process and display results
+    displayResults(data);
+}
+
+// Legacy code below - keeping for compatibility
+// TODO: Refactor to use new error handling system
 document.getElementById("queryForm").addEventListener("submit", function(e) {
   e.preventDefault(); // Prevent default form submission
   

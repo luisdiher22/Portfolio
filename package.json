@@ -1,0 +1,56 @@
+{
+  "name": "sql-portfolio",
+  "version": "1.0.0",
+  "description": "Interactive SQL portfolio with drag-and-drop query builder",
+  "main": "app.py",
+  "scripts": {
+    "start": "python app.py",
+    "dev": "FLASK_DEBUG=True python app.py",
+    "test": "python -m pytest tests.py -v",
+    "test-coverage": "python -m pytest tests.py --cov=app --cov-report=html",
+    "lint": "flake8 app.py",
+    "format": "black app.py",
+    "security-check": "bandit app.py",
+    "build": "echo 'Build process for static files'",
+    "deploy": "echo 'Deploy to production'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luisdiher22/Portfolio.git"
+  },
+  "keywords": [
+    "sql",
+    "portfolio",
+    "flask",
+    "javascript",
+    "python",
+    "interactive",
+    "database",
+    "drag-and-drop"
+  ],
+  "author": "Luis Diego",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luisdiher22/Portfolio/issues"
+  },
+  "homepage": "https://github.com/luisdiher22/Portfolio#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "prettier": "^2.8.0",
+    "stylelint": "^14.0.0",
+    "stylelint-config-standard": "^24.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.7.0"
+  }
+}
