@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/luisdiher22/Portfolio#readme",
   "devDependencies": {
-    "eslint": "^8.0.0",
+    "eslint": "^9.31.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.25.0",
     "eslint-plugin-node": "^11.1.0",
