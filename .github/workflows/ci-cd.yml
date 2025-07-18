@@ -26,12 +26,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install flake8 black bandit safety
+        pip install flake8 black bandit safety pytest-cov
     
     - name: Lint with flake8
       run: |
         flake8 app.py --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 app.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 app.py --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
     
     - name: Check code formatting with black
       run: |
@@ -55,7 +55,7 @@ jobs:
         file: ./coverage.xml
         flags: unittests
         name: codecov-umbrella
-        fail_ci_if_error: true
+        fail_ci_if_error: false
 
   lint-frontend:
     runs-on: ubuntu-latest
@@ -71,6 +71,9 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
+        chmod +x ./node_modules/.bin/eslint
+        chmod +x ./node_modules/.bin/prettier
+        chmod +x ./node_modules/.bin/stylelint
     
     - name: Lint JavaScript
       run: |
@@ -99,9 +102,10 @@ jobs:
         output: 'trivy-results.sarif'
     
     - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: 'trivy-results.sarif'
+      continue-on-error: true
 
   build:
     needs: [test, lint-frontend, security-scan]

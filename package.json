@@ -8,7 +8,7 @@
     "dev": "FLASK_DEBUG=True python app.py",
     "test": "python -m pytest tests.py -v",
     "test-coverage": "python -m pytest tests.py --cov=app --cov-report=html",
-    "lint": "flake8 app.py",
+    "lint": "flake8 app.py --max-line-length=88",
     "format": "black app.py",
     "security-check": "bandit app.py",
     "build": "echo 'Build process for static files'",
