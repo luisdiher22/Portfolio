@@ -570,10 +570,17 @@ function initializeTutorialSystem() {
     // Tutorial card clicks
     document.querySelectorAll('.tutorial-card').forEach(card => {
         card.addEventListener('click', function() {
-            if (this.classList.contains('locked')) return;
+            console.log('Tutorial card clicked:', this);
+            
+            if (this.classList.contains('locked')) {
+                console.log('Card is locked, ignoring click');
+                return;
+            }
             
             const contentKey = this.getAttribute('data-content');
             const level = parseInt(this.getAttribute('data-level'));
+            
+            console.log('Content key:', contentKey, 'Level:', level);
             
             loadTutorialContent(contentKey, level);
             setActiveTutorialCard(this);
@@ -588,6 +595,16 @@ function initializeTutorialSystem() {
     document.getElementById('next-tutorial').addEventListener('click', function() {
         navigateTutorial(1);
     });
+    
+    // Initialize with first level content
+    console.log('Initializing tutorial with first level');
+    loadTutorialContent('sql', 1);
+    
+    // Set first card as active
+    const firstCard = document.querySelector('.tutorial-card[data-level="1"]');
+    if (firstCard) {
+        setActiveTutorialCard(firstCard);
+    }
 }
 
 function openTutorialMode() {
@@ -620,6 +637,16 @@ function openTutorialMode() {
     setTimeout(() => {
         tutorialOverlay.classList.remove('hidden');
         tutorialOverlay.classList.add('show');
+        
+        // Initialize tutorial content
+        console.log('Initializing tutorial content on open');
+        loadTutorialContent('sql', 1);
+        
+        // Set first card as active
+        const firstCard = document.querySelector('.tutorial-card[data-level="1"]');
+        if (firstCard) {
+            setActiveTutorialCard(firstCard);
+        }
     }, 300);
     
     // Update chibi message
@@ -677,16 +704,37 @@ function closeTutorialMode() {
 }
 
 function loadTutorialContent(contentKey, level) {
+    console.log('=== DEBUG: loadTutorialContent called ===');
+    console.log('contentKey:', contentKey, 'level:', level);
+    
     const tutorialTitle = document.getElementById('tutorial-title');
     const tutorialBody = document.getElementById('tutorial-body');
     const prevBtn = document.getElementById('prev-tutorial');
     const nextBtn = document.getElementById('next-tutorial');
     
+    console.log('Elements found:');
+    console.log('- tutorialTitle:', tutorialTitle);
+    console.log('- tutorialBody:', tutorialBody);
+    console.log('- prevBtn:', prevBtn);
+    console.log('- nextBtn:', nextBtn);
+    
+    console.log('Loading tutorial content:', contentKey, 'Level:', level, 'Language:', currentLang);
+    
     const content = cueData[currentLang][contentKey];
     
+    console.log('Content found:', content);
+    
     if (content) {
-        tutorialTitle.textContent = content.title;
-        tutorialBody.innerHTML = content.body;
+        if (tutorialTitle) {
+            tutorialTitle.textContent = content.title;
+            console.log('Title set to:', content.title);
+        }
+        if (tutorialBody) {
+            tutorialBody.innerHTML = content.body;
+            console.log('Body content set, length:', content.body.length);
+        }
+        
+        console.log('Content loaded successfully');
         
         // Setup reveal buttons for practice sections
         const revealBtn = tutorialBody.querySelector('.reveal-btn');
@@ -715,6 +763,8 @@ function loadTutorialContent(contentKey, level) {
             prevBtn.textContent = '← Previous';
             nextBtn.textContent = 'Next →';
         }
+    } else {
+        console.error('No content found for:', contentKey, 'in language:', currentLang);
     }
 }
 
@@ -1520,4 +1570,17 @@ document.addEventListener('DOMContentLoaded', function() {
         cardHand.addEventListener('mouseenter', handleMouseEnter);
         cardHand.addEventListener('mouseleave', handleMouseLeave);
     }
+});
+
+// Initialize tutorial system on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing tutorial system...');
+    initializeTutorialSystem();
+    // Automatically load first tutorial level
+    loadTutorialContent('sql', 1);
+    
+    // Test if elements exist
+    console.log('Tutorial content area:', document.querySelector('#tutorial-content-area'));
+    console.log('Tutorial title:', document.querySelector('#tutorial-title'));
+    console.log('Tutorial body:', document.querySelector('#tutorial-body'));
 });
