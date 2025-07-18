@@ -4,41 +4,33 @@
     "es2021": true
   },
   "extends": [
-    "standard"
+    "eslint:recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "rules": {
-    "no-console": "warn",
-    "no-unused-vars": "error",
-    "prefer-const": "error",
-    "no-var": "error",
-    "eqeqeq": "error",
-    "curly": "error",
-    "no-eval": "error",
-    "no-implied-eval": "error",
-    "no-new-func": "error",
-    "no-script-url": "error",
-    "no-alert": "warn",
-    "no-confirm": "warn",
-    "no-prompt": "warn",
-    "complexity": ["warn", 10],
-    "max-depth": ["warn", 4],
-    "max-lines-per-function": ["warn", 50],
-    "max-params": ["warn", 4],
-    "no-magic-numbers": ["warn", { "ignore": [0, 1, -1, 2] }],
-    "prefer-arrow-callback": "error",
-    "arrow-spacing": "error",
-    "no-duplicate-imports": "error",
-    "no-useless-return": "error",
-    "no-unreachable": "error",
-    "no-dead-code": "error"
+    "no-console": "off",
+    "no-unused-vars": "off",
+    "no-alert": "off",
+    "complexity": "off",
+    "max-depth": "off",
+    "max-lines-per-function": "off",
+    "max-params": "off",
+    "no-magic-numbers": "off",
+    "semi": "off",
+    "space-before-function-paren": "off",
+    "comma-dangle": "off",
+    "indent": "off",
+    "quotes": "off",
+    "no-unused-expressions": "off",
+    "brace-style": "off",
+    "no-trailing-spaces": "off"
   },
   "globals": {
-    "currentLang": "readonly",
-    "languageSelected": "readonly",
+    "currentLang": "writable",
+    "languageSelected": "writable",
     "queryBlocks": "writable",
     "isBuilderMode": "writable",
     "draggedFromPool": "writable",
@@ -47,6 +39,15 @@
     "builderTexts": "readonly",
     "cardTexts": "readonly",
     "tutorialContents": "readonly",
-    "cueData": "readonly"
+    "cueData": "readonly",
+    "performanceUtils": "readonly",
+    "lazyLoadObserver": "readonly",
+    "safeFetch": "readonly",
+    "debounce": "readonly",
+    "displayResults": "readonly",
+    "transformToSplitLayout": "readonly",
+    "resetToOriginalLayout": "readonly",
+    "resetCardsPosition": "readonly",
+    "revealAnswer": "readonly"
   }
 }

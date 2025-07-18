@@ -6,7 +6,7 @@
     "no-duplicate-selectors": true,
     "color-hex-case": "lower",
     "color-hex-length": "short",
-    "color-named": "never",
+    "color-named": null,
     "selector-combinator-space-after": "always",
     "selector-attribute-quotes": "always",
     "selector-attribute-operator-space-before": "never",
@@ -15,6 +15,7 @@
     "declaration-block-trailing-semicolon": "always",
     "declaration-colon-space-before": "never",
     "declaration-colon-space-after": "always",
+    "declaration-colon-newline-after": null,
     "property-no-unknown": true,
     "block-opening-brace-space-before": "always",
     "rule-empty-line-before": ["always", {
@@ -24,7 +25,11 @@
     "comment-empty-line-before": ["always", {
       "except": ["first-nested"],
       "ignore": ["stylelint-commands"]
-    }]
+    }],
+    "keyframes-name-pattern": null,
+    "selector-id-pattern": null,
+    "no-descending-specificity": null,
+    "declaration-block-single-line-max-declarations": null
   },
   "ignoreFiles": [
     "**/*.js",

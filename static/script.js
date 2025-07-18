@@ -14,7 +14,7 @@ let deferredPrompt;
 let isOnline = navigator.onLine;
 
 // Initialize application on page load
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   initializePWA();
   showLanguagePopup();
   updateBuilderDisplay();
@@ -600,11 +600,11 @@ const cueData = {
     },
     querypractice1: {
       title: 'Practice 1: Simple query',
-      body: `Write a query that selects all fields from the 'clients' table.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT * FROM clients;</code></div>`,
+      body: 'Write a query that selects all fields from the \'clients\' table.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT * FROM clients;</code></div>',
     },
     querypractice2: {
       title: 'Practice 2: Filtering',
-      body: `Write a query that selects names of clients older than 30.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT name FROM clients WHERE age &gt; 30;</code></div>`,
+      body: 'Write a query that selects names of clients older than 30.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT name FROM clients WHERE age &gt; 30;</code></div>',
     },
   },
   es: {
@@ -646,11 +646,11 @@ const cueData = {
     },
     querypractice1: {
       title: 'Práctica 1: Consulta simple',
-      body: `Escribe una consulta que seleccione todos los campos de la tabla 'clientes'.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT * FROM clientes;</code></div>`,
+      body: 'Escribe una consulta que seleccione todos los campos de la tabla \'clientes\'.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT * FROM clientes;</code></div>',
     },
     querypractice2: {
       title: 'Práctica 2: Filtrado',
-      body: `Escribe una consulta que seleccione los nombres de los clientes mayores de 30 años.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT nombre FROM clientes WHERE edad &gt; 30;</code></div>`,
+      body: 'Escribe una consulta que seleccione los nombres de los clientes mayores de 30 años.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT nombre FROM clientes WHERE edad &gt; 30;</code></div>',
     },
   },
 };
@@ -692,7 +692,7 @@ const langSwitch = document.getElementById('langSwitch');
 const langLabel = document.getElementById('lang-label');
 
 // Only add switch listener after language has been initially selected
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     if (langSwitch) {
       langSwitch.addEventListener('change', () => {
@@ -741,34 +741,6 @@ function safeQuerySelectorAll(selector, parent = document) {
  * Switch the language of the website
  * @param {string} lang - Language code ('en' or 'es')
  */
-function switchLanguage(lang) {
-  if (!lang || !['en', 'es'].includes(lang)) {
-    console.error('Invalid language code:', lang);
-    return;
-  }
-
-  currentLang = lang;
-  const elementsToTranslate = safeQuerySelectorAll('[data-en][data-es]');
-
-  elementsToTranslate.forEach(element => {
-    const translation = element.getAttribute(`data-${lang}`);
-    if (translation) {
-      element.textContent = translation;
-    }
-  });
-
-  // Update language switch
-  const langSwitch = safeQuerySelector('#langSwitch');
-  const langLabel = safeQuerySelector('#lang-label');
-
-  if (langSwitch) {
-    langSwitch.checked = lang === 'es';
-  }
-  if (langLabel) {
-    langLabel.textContent = lang.toUpperCase();
-  }
-}
-
 function switchLanguage(lang) {
   document.querySelector('.site-title').textContent =
     lang === 'es' ? 'Portafolio de Luis Diego' : "Luis Diego's Portfolio";
@@ -886,12 +858,12 @@ function switchLanguage(lang) {
 
 // New Tutorial System
 let currentTutorialLevel = 1;
-let tutorialOverlay = null;
-let tutorialSidebar = null;
-let tutorialContentArea = null;
+const tutorialOverlay = null;
+const tutorialSidebar = null;
+const tutorialContentArea = null;
 
 // Initialize new tutorial system
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   // Keep existing functionality
   updateBuilderDisplay();
   setupBuilderControls();
@@ -913,14 +885,14 @@ function initializeTutorialSystem() {
 
   // Chibi click event
   if (chibiHelper) {
-    chibiHelper.addEventListener('click', function () {
+    chibiHelper.addEventListener('click', () => {
       openTutorialMode();
     });
   }
 
   // Close tutorial event
   if (closeTutorialBtn) {
-    closeTutorialBtn.addEventListener('click', function () {
+    closeTutorialBtn.addEventListener('click', () => {
       closeTutorialMode();
     });
   }
@@ -941,11 +913,11 @@ function initializeTutorialSystem() {
   });
 
   // Navigation buttons
-  document.getElementById('prev-tutorial').addEventListener('click', function () {
+  document.getElementById('prev-tutorial').addEventListener('click', () => {
     navigateTutorial(-1);
   });
 
-  document.getElementById('next-tutorial').addEventListener('click', function () {
+  document.getElementById('next-tutorial').addEventListener('click', () => {
     navigateTutorial(1);
   });
 
@@ -1221,7 +1193,7 @@ let isBuilderMode = true;
 let queryBlocks = [];
 
 // Initialize builder mode
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   updateBuilderDisplay();
   setupBuilderControls();
 });
@@ -1233,7 +1205,7 @@ function setupBuilderControls() {
   const queryBox = document.getElementById('queryBox');
   const queryBuilder = document.getElementById('queryBuilder');
 
-  useBuilderBtn.addEventListener('click', function () {
+  useBuilderBtn.addEventListener('click', () => {
     isBuilderMode = true;
     queryBuilder.style.display = 'block';
     queryBox.style.display = 'none';
@@ -1242,7 +1214,7 @@ function setupBuilderControls() {
     syncTextareaToBuilder();
   });
 
-  useTextareaBtn.addEventListener('click', function () {
+  useTextareaBtn.addEventListener('click', () => {
     isBuilderMode = false;
     queryBuilder.style.display = 'none';
     queryBox.style.display = 'block';
@@ -1251,7 +1223,7 @@ function setupBuilderControls() {
     syncBuilderToTextarea();
   });
 
-  clearQueryBtn.addEventListener('click', function () {
+  clearQueryBtn.addEventListener('click', () => {
     queryBlocks = [];
     updateBuilderDisplay();
     if (!isBuilderMode) {
@@ -1276,7 +1248,7 @@ function syncBuilderToTextarea() {
   if (textareaValue) {
     // Simple parsing - split by spaces and create blocks
     queryBlocks = textareaValue.split(/\s+/).map(value => ({
-      value: value,
+      value,
       type: getBlockType(value),
     }));
     updateBuilderDisplay();
@@ -1359,7 +1331,7 @@ function updateBuilderDisplay() {
     let html = '';
 
     // Add initial drop zone
-    html += `<span class="drop-zone" data-insert-index="0"></span>`;
+    html += '<span class="drop-zone" data-insert-index="0"></span>';
 
     queryBlocks.forEach((block, index) => {
       const blockClass = block.type === 'table' ? 'query-block table-block' : 'query-block';
@@ -1524,16 +1496,16 @@ function handleDragEnd(event) {
 }
 
 // Add click handlers to SQL blocks
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   // Setup drag and drop for query display area
   const queryDisplay = document.getElementById('queryDisplay');
 
-  queryDisplay.addEventListener('dragover', function (event) {
+  queryDisplay.addEventListener('dragover', event => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   });
 
-  queryDisplay.addEventListener('drop', function (event) {
+  queryDisplay.addEventListener('drop', event => {
     event.preventDefault();
     // This handles dropping when the display area is empty or between blocks
     if (event.target === queryDisplay || event.target.classList.contains('placeholder-text')) {
@@ -1630,7 +1602,7 @@ function createInputBlock(element, type) {
 /**
  * Handle SQL query form submission with proper validation and error handling
  */
-document.getElementById('queryForm').addEventListener('submit', async function (e) {
+document.getElementById('queryForm').addEventListener('submit', async e => {
   e.preventDefault();
 
   let query;
@@ -1668,7 +1640,7 @@ document.getElementById('queryForm').addEventListener('submit', async function (
 
     const data = await safeFetch('/query', {
       method: 'POST',
-      body: JSON.stringify({ query: query }),
+      body: JSON.stringify({ query }),
     });
 
     // Handle successful response
@@ -1735,7 +1707,7 @@ function handleQueryResults(data) {
 
 // Legacy code below - keeping for compatibility
 // TODO: Refactor to use new error handling system
-document.getElementById('queryForm').addEventListener('submit', function (e) {
+document.getElementById('queryForm').addEventListener('submit', e => {
   e.preventDefault(); // Prevent default form submission
 
   let query;
@@ -1985,7 +1957,7 @@ function hideCards() {
 }
 
 // Call this function when page loads
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     resetCardsPosition();
   }, 500);
@@ -2020,7 +1992,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Initialize tutorial system on page load
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   initializeTutorialSystem();
   // Automatically load first tutorial level
   loadTutorialContent('sql', 1);
