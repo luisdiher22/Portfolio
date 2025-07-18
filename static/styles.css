@@ -938,13 +938,14 @@ textarea:focus {
 }
 
 @keyframes pulseAttention {
-  0%, 70%, 100% {
-    box-shadow: 3px 3px 0 0 #032539,
-      6px 6px 0 0 rgb(3 37 57 / 30%);
+  0%,
+  70%,
+  100% {
+    box-shadow: 3px 3px 0 0 #032539, 6px 6px 0 0 rgb(3 37 57 / 30%);
   }
+
   35% {
-    box-shadow: 4px 4px 0 0 #032539,
-      7px 7px 0 0 rgb(3 37 57 / 40%);
+    box-shadow: 4px 4px 0 0 #032539, 7px 7px 0 0 rgb(3 37 57 / 40%);
   }
 }
 
@@ -1021,7 +1022,7 @@ textarea:focus {
   background: linear-gradient(135deg, #fa991c 0%, #e8890b 100%);
   border: 1px solid #032539;
   border-bottom: none !important;
-  padding: 6px 16px 0 16px !important;
+  padding: 6px 16px 0 !important;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1115,11 +1116,25 @@ textarea:focus {
   font-size: 8px;
 }
 
-.card:nth-child(1) { border-color: #1c768f; }
-.card:nth-child(2) { border-color: #fa991c; }
-.card:nth-child(3) { border-color: #032539; }
-.card:nth-child(4) { border-color: #9b59b6; }
-.card:nth-child(5) { border-color: #e74c3c; }
+.card:nth-child(1) {
+  border-color: #1c768f;
+}
+
+.card:nth-child(2) {
+  border-color: #fa991c;
+}
+
+.card:nth-child(3) {
+  border-color: #032539;
+}
+
+.card:nth-child(4) {
+  border-color: #9b59b6;
+}
+
+.card:nth-child(5) {
+  border-color: #e74c3c;
+}
 
 .card:hover {
   transform: scale(1.05);
@@ -1174,11 +1189,25 @@ textarea:focus {
   border-radius: 4px 4px 0 0;
 }
 
-.card:nth-child(1)::before { background: #1c768f; }
-.card:nth-child(2)::before { background: #fa991c; }
-.card:nth-child(3)::before { background: #032539; }
-.card:nth-child(4)::before { background: #9b59b6; }
-.card:nth-child(5)::before { background: #e74c3c; }
+.card:nth-child(1)::before {
+  background: #1c768f;
+}
+
+.card:nth-child(2)::before {
+  background: #fa991c;
+}
+
+.card:nth-child(3)::before {
+  background: #032539;
+}
+
+.card:nth-child(4)::before {
+  background: #9b59b6;
+}
+
+.card:nth-child(5)::before {
+  background: #e74c3c;
+}
 
 .card:hover::before {
   height: 6px;
@@ -1592,18 +1621,18 @@ textarea:focus {
 
 /* ====== PRACTICE QUERY BUILDER ====== */
 .practice-query-builder {
-  background: rgba(251, 243, 242, 0.05);
+  background: rgb(251 243 242 / 5%);
   border: 2px solid #1c768f;
   border-radius: 8px;
   padding: 15px;
   margin: 15px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 30%);
 }
 
 .practice-query-builder h4 {
   color: #fa991c;
   font-size: 10px;
-  margin: 0 0 15px 0;
+  margin: 0 0 15px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -1647,7 +1676,7 @@ textarea:focus {
   gap: 8px;
   justify-content: center;
   padding: 10px;
-  background: rgba(28, 118, 143, 0.1);
+  background: rgb(28 118 143 / 10%);
   border-radius: 4px;
 }
 
@@ -1728,7 +1757,7 @@ textarea:focus {
 
 .practice-success {
   color: #4caf50;
-  background: rgba(76, 175, 80, 0.1);
+  background: rgb(76 175 80 / 10%);
   border: 1px solid #4caf50;
   border-radius: 4px;
   padding: 8px;
@@ -1736,7 +1765,7 @@ textarea:focus {
 
 .practice-error {
   color: #f44336;
-  background: rgba(244, 67, 54, 0.1);
+  background: rgb(244 67 54 / 10%);
   border: 1px solid #f44336;
   border-radius: 4px;
   padding: 8px;
@@ -1744,7 +1773,7 @@ textarea:focus {
 
 .practice-info {
   color: #2196f3;
-  background: rgba(33, 150, 243, 0.1);
+  background: rgb(33 150 243 / 10%);
   border: 1px solid #2196f3;
   border-radius: 4px;
   padding: 8px;
@@ -1871,7 +1900,7 @@ textarea:focus {
   /* Chibi speech bubble very small mobile adjustments */
   .chibi-speech-bubble {
     right: 45px;
-    top: 0px;
+    top: 0;
     max-width: 120px;
     padding: 6px 10px;
   }
@@ -1936,7 +1965,7 @@ textarea:focus {
   }
 
   .tables-tab {
-    padding: 0.5rem 1.5rem 0.75rem 1.5rem;
+    padding: 0.5rem 1.5rem 0.75rem;
     font-size: 0.75rem;
     min-width: 6rem;
   }
@@ -1967,7 +1996,7 @@ textarea:focus {
   }
 
   .tables-tab {
-    padding: 0.375rem 1rem 0.5rem 1rem;
+    padding: 0.375rem 1rem 0.5rem;
     font-size: 0.6rem;
     gap: 0.5rem;
   }
