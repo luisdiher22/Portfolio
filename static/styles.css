@@ -319,10 +319,10 @@ body::before {
 }
 
 .container {
-    width: 400px; /* Much smaller default */
+    width: 350px; /* Even smaller default */
     text-align: center;
     transition: transform 0.6s ease, opacity 0.6s ease;
-    margin-top: 10px; /* Much smaller default */
+    margin-top: 5px; /* Even smaller margin */
     position: relative;
     z-index: 5;
 }
@@ -446,13 +446,13 @@ th, td {
 
 .query-card {
     background-color: #1C768F;
-    padding: 20px; /* Smaller padding */
+    padding: 15px; /* Smaller padding */
     border-radius: 16px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 400px; /* Much smaller default */
+    max-width: 350px; /* Much smaller default */
     text-align: center;
-    margin-top: 5px; /* Smaller margin */
+    margin-top: 10px; /* Positive margin */
 }
 
 #results {
@@ -504,27 +504,27 @@ th, td {
 
 #card-hand {
     position: fixed;
-    bottom: -20px; /* Much more visible */
+    bottom: -5px; /* Almost fully visible */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 5px; /* Positive gap */
-    padding: 0 10px; /* Smaller padding */
+    gap: 8px; /* Larger positive gap */
+    padding: 0 5px; /* Smaller padding */
     z-index: 10;
-    height: 200px; /* Much smaller height */
+    height: 140px; /* Much smaller height */
     pointer-events: none;
-    width: 500px; /* Much smaller width */
+    width: 400px; /* Much smaller width */
     max-width: 95vw; /* Prevent horizontal overflow */
     overflow: visible;
     transition: transform 0.6s ease, opacity 0.6s ease;
 }
 .card {
-    width: 80px; /* Much smaller default */
-    height: 110px; /* Much smaller default */
+    width: 60px; /* Much smaller default */
+    height: 80px; /* Much smaller default */
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-radius: 20px;
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    padding: 8px 4px; /* Smaller padding */
+    padding: 6px 3px; /* Smaller padding */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -551,10 +551,10 @@ th, td {
 }
 
 .card-title {
-    font-size: 0.9rem;
+    font-size: 0.6rem; /* Smaller font for smaller cards */
     color: #032539;
     font-weight: 700;
-    margin-top: 5px;
+    margin-top: 3px; /* Smaller margin */
     z-index: 1;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -566,7 +566,7 @@ th, td {
 }
 
 .card-icon {
-    font-size: 4rem;
+    font-size: 1.5rem; /* Much smaller for small cards */
     margin: auto;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     z-index: 1;
@@ -786,16 +786,16 @@ th, td {
 /* Chibi Tutorial Helper */
 #chibi-helper {
     position: fixed;
-    right: -40px; /* Much more visible */
+    right: 10px; /* Fully visible */
     top: 50%;
-    transform: translateY(-50%) scale(0.7); /* Smaller scale */
+    transform: translateY(-50%) scale(0.8); /* Visible scale */
     z-index: 1000;
     transition: right 0.6s ease;
     animation: chibiPeek 4s ease-in-out infinite;
 }
 
 #chibi-helper:hover {
-    right: -15px; /* Shows much more on hover */
+    right: 20px; /* More visible on hover */
 }
 
 #chibi-character {
@@ -1939,80 +1939,81 @@ input:checked + .slider.round:before {
     }
 }
 
-/* Common Laptop Screens (1366px width) */
-@media screen and (min-width: 1200px) and (max-width: 1500px) {
+/* Laptop screens - force small sizes */
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
     .container {
-        width: 400px !important;
-        margin-top: 10px !important;
+        width: 350px !important;
+        margin-top: 5px !important;
     }
     
     .intro-card {
-        max-width: 320px !important;
-        top: 20px !important;
-        left: 8px !important;
-        padding: 15px 12px !important;
-        min-height: 280px !important;
+        max-width: 280px !important;
+        top: 15px !important;
+        left: 5px !important;
+        padding: 12px 10px !important;
+        min-height: 240px !important;
     }
     
     .site-title {
-        font-size: 1.3rem !important;
+        font-size: 1.1rem !important;
     }
     
     .site-subtitle {
-        font-size: 0.9rem !important;
+        font-size: 0.8rem !important;
+        margin: 0 0 15px 0 !important;
     }
     
     .examples-section h3 {
-        font-size: 1rem !important;
+        font-size: 0.9rem !important;
     }
     
     .examples-section p {
-        font-size: 0.8rem !important;
+        font-size: 0.7rem !important;
     }
     
     #card-hand {
-        width: 480px !important;
-        height: 160px !important;
-        bottom: -10px !important;
-        gap: 2px !important;
+        width: 400px !important;
+        height: 140px !important;
+        bottom: -5px !important;
+        gap: 3px !important;
     }
     
     .card {
-        width: 70px !important;
-        height: 95px !important;
-        padding: 5px 3px !important;
+        width: 60px !important;
+        height: 80px !important;
+        padding: 4px 2px !important;
     }
     
     .card-title {
-        font-size: 0.55rem !important;
+        font-size: 0.5rem !important;
     }
     
     .card-icon {
-        font-size: 1rem !important;
+        font-size: 0.9rem !important;
     }
     
     #chibi-helper {
-        right: -40px !important;
+        right: 5px !important;
         transform: translateY(-50%) scale(0.6) !important;
     }
     
     #chibi-helper:hover {
-        right: -15px !important;
+        right: 15px !important;
     }
     
     .query-card {
-        padding: 15px !important;
-        max-width: 400px !important;
-        margin-top: 5px !important;
+        padding: 12px !important;
+        max-width: 350px !important;
+        margin-top: 10px !important;
     }
     
     .language-popup-content {
-        padding: 20px !important;
-        max-width: 280px !important;
+        padding: 15px !important;
+        max-width: 250px !important;
     }
     
     .language-popup-content h2 {
-        font-size: 1.3rem !important;
+        font-size: 1.1rem !important;
     }
 }
 
