@@ -168,16 +168,35 @@ GROUP BY category;
 
 ## 🚀 Despliegue
 
-### Heroku
-1. Instala Heroku CLI
-2. Crea una nueva aplicación: `heroku create tu-portfolio`
-3. Configura Python: `heroku buildpacks:set heroku/python`
-4. Despliega: `git push heroku main`
+### Plataformas Gratuitas Recomendadas
 
-### Railway/Render
-1. Conecta tu repositorio
-2. Selecciona Python como runtime
-3. Configura comando de inicio: `python app.py`
+#### Railway (Recomendado)
+1. Ve a [railway.app](https://railway.app/)
+2. Conecta tu repositorio GitHub
+3. Railway detecta automáticamente Flask
+4. ¡Despliega automáticamente!
+
+#### Render
+1. Ve a [render.com](https://render.com/)
+2. Conecta tu repositorio GitHub
+3. Configura comando de inicio: `gunicorn app:app`
+4. Despliega automáticamente
+
+#### Vercel
+1. Instala CLI: `npm install -g vercel`
+2. Ejecuta: `vercel` en el directorio del proyecto
+3. Sigue las instrucciones
+4. Para producción: `vercel --prod`
+
+### Variables de Entorno
+Para producción, configura:
+```
+FLASK_ENV=production
+SECRET_KEY=tu-clave-secreta-aqui
+DEBUG=False
+```
+
+Consulta [DEPLOYMENT.md](DEPLOYMENT.md) para más detalles.
 
 ## 🤝 Contribuciones
 
@@ -216,7 +235,51 @@ Las contribuciones son bienvenidas:
 - [ ] Gestos táctiles mejorados
 - [ ] Modo offline básico
 
-## 🐛 Reportar Errores
+## � Deployment
+
+### Free Hosting Options
+El proyecto está configurado para desplegarse en múltiples plataformas gratuitas:
+
+#### Railway (Recomendado)
+- **Ventajas**: Fácil integración con GitHub, dominio gratuito
+- **Setup**: Conecta tu repositorio GitHub en [railway.app](https://railway.app/)
+- **Configuración**: Automática, detecta Flask automáticamente
+
+#### Render
+- **Ventajas**: Builds automáticos, SSL gratuito
+- **Setup**: Conecta tu repositorio en [render.com](https://render.com/)
+- **Comando**: `gunicorn app:app`
+
+#### Vercel
+- **Ventajas**: CDN global, funciones serverless
+- **Setup**: `npm i -g vercel && vercel`
+- **Configuración**: Incluye `vercel.json`
+
+### CI/CD Pipeline
+El proyecto incluye un pipeline completo de CI/CD con GitHub Actions:
+- Testing automático en múltiples versiones de Python
+- Análisis de seguridad con Bandit, Safety y Trivy
+- Verificación de build
+
+**Nota**: Ya no se requieren secrets adicionales. El pipeline funciona completamente sin configuración.
+
+### Despliegue Manual
+```bash
+# Para Railway
+railway login
+railway link
+railway up
+
+# Para Render
+# Conecta tu repositorio directamente desde el dashboard
+
+# Para Vercel
+vercel --prod
+```
+
+Para más detalles sobre el despliegue, consulta [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## �🐛 Reportar Errores
 
 Si encuentras algún error, por favor:
 1. Revisa los issues existentes
