@@ -928,17 +928,32 @@ textarea:focus {
   padding: 12px 16px;
   max-width: 200px;
   image-rendering: pixelated;
-  opacity: 0;
-  transform: translateX(15px);
+  opacity: 1;
+  transform: translateX(0);
   transition: all 0.3s ease;
   z-index: 10;
   box-shadow: 3px 3px 0 0 #032539,
     6px 6px 0 0 rgb(3 37 57 / 30%);
+  animation: pulseAttention 3s ease-in-out infinite;
+}
+
+@keyframes pulseAttention {
+  0%, 70%, 100% {
+    box-shadow: 3px 3px 0 0 #032539,
+      6px 6px 0 0 rgb(3 37 57 / 30%);
+  }
+  35% {
+    box-shadow: 4px 4px 0 0 #032539,
+      7px 7px 0 0 rgb(3 37 57 / 40%);
+  }
 }
 
 #chibi-helper:hover .chibi-speech-bubble {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(-3px);
+  box-shadow: 4px 4px 0 0 #032539,
+    7px 7px 0 0 rgb(3 37 57 / 30%);
+  animation: none; /* Stop pulsing on hover */
 }
 
 .bubble-text {
@@ -1815,6 +1830,20 @@ textarea:focus {
     font-size: 1.2rem;
   }
 
+  /* Chibi speech bubble mobile adjustments */
+  .chibi-speech-bubble {
+    right: 60px;
+    top: -5px;
+    max-width: 150px;
+    padding: 8px 12px;
+    font-size: 7px;
+  }
+
+  .bubble-text {
+    font-size: 6px;
+    line-height: 1.6;
+  }
+
   /* Tutorial mantiene layout horizontal en tablets */
 }
 
@@ -1837,6 +1866,19 @@ textarea:focus {
   .main-content {
     padding: 5px;
     gap: 15px;
+  }
+
+  /* Chibi speech bubble very small mobile adjustments */
+  .chibi-speech-bubble {
+    right: 45px;
+    top: 0px;
+    max-width: 120px;
+    padding: 6px 10px;
+  }
+
+  .bubble-text {
+    font-size: 5px;
+    line-height: 1.4;
   }
 
   .language-popup-content {

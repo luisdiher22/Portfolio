@@ -789,9 +789,8 @@ if (tabsTab && tabsContainer) {
   });
 
   // Close tab when clicking outside
-  document.addEventListener('click', (e) => {
-    if (tabsContainer.classList.contains('expanded') && 
-        !tabsContainer.contains(e.target)) {
+  document.addEventListener('click', e => {
+    if (tabsContainer.classList.contains('expanded') && !tabsContainer.contains(e.target)) {
       tabsContainer.classList.remove('expanded');
     }
   });
@@ -963,6 +962,15 @@ function switchLanguage(lang) {
 
   // Update new tutorial system
   updateTutorialLanguage();
+
+  // Update chibi message
+  const chibiMessage = document.getElementById('chibi-message');
+  if (chibiMessage) {
+    chibiMessage.textContent =
+      lang === 'es'
+        ? '¿Necesitas ayuda con SQL? ¡Haz clic en mí!'
+        : 'Need help with SQL? Click me!';
+  }
 }
 
 // New Tutorial System
@@ -1162,9 +1170,9 @@ function loadTutorialContent(contentKey, level) {
       if (existingHighlights) {
         existingHighlights.remove();
       }
-      
+
       tutorialBody.innerHTML = content.body;
-      
+
       // Add detailed highlights based on content type
       addTutorialHighlights(tutorialBody, contentKey);
     }
@@ -1172,17 +1180,17 @@ function loadTutorialContent(contentKey, level) {
     // Update icon based on content
     if (tutorialIcon) {
       const iconMap = {
-        'sql': '📚',
-        'table': '📊', 
-        'query': '❓',
-        'structure': '🏗️',
-        'select': '🔍',
-        'asterisk': '⭐',
-        'from': '📍',
-        'where': '🎯',
-        'operators': '⚖️',
-        'querypractice1': '🎯',
-        'querypractice2': '🔎'
+        sql: '📚',
+        table: '📊',
+        query: '❓',
+        structure: '🏗️',
+        select: '🔍',
+        asterisk: '⭐',
+        from: '📍',
+        where: '🎯',
+        operators: '⚖️',
+        querypractice1: '🎯',
+        querypractice2: '🔎',
       };
       tutorialIcon.textContent = iconMap[contentKey] || '🎓';
     }
@@ -1190,12 +1198,15 @@ function loadTutorialContent(contentKey, level) {
     // Update progress
     const totalLevels = 11;
     const progressPercentage = (level / totalLevels) * 100;
-    
+
     if (progressText) {
-      const levelText = currentLang === 'es' ? `Nivel ${level} de ${totalLevels}` : `Level ${level} of ${totalLevels}`;
+      const levelText =
+        currentLang === 'es'
+          ? `Nivel ${level} de ${totalLevels}`
+          : `Level ${level} of ${totalLevels}`;
       progressText.textContent = levelText;
     }
-    
+
     if (progressFill) {
       progressFill.style.width = `${progressPercentage}%`;
     }
@@ -1247,28 +1258,37 @@ function loadTutorialContent(contentKey, level) {
  */
 function addTutorialHighlights(container, contentKey) {
   const highlightsMap = {
-    'sql': [
-      { icon: '💾', text: currentLang === 'es' ? 'Lenguaje para bases de datos' : 'Database query language' },
+    sql: [
+      {
+        icon: '💾',
+        text: currentLang === 'es' ? 'Lenguaje para bases de datos' : 'Database query language',
+      },
       { icon: '🔧', text: currentLang === 'es' ? 'Herramienta poderosa' : 'Powerful tool' },
-      { icon: '🌐', text: currentLang === 'es' ? 'Estándar mundial' : 'Global standard' }
+      { icon: '🌐', text: currentLang === 'es' ? 'Estándar mundial' : 'Global standard' },
     ],
-    'table': [
+    table: [
       { icon: '📋', text: currentLang === 'es' ? 'Estructura organizada' : 'Organized structure' },
       { icon: '📊', text: currentLang === 'es' ? 'Filas y columnas' : 'Rows and columns' },
-      { icon: '🗃️', text: currentLang === 'es' ? 'Almacena información' : 'Stores information' }
+      { icon: '🗃️', text: currentLang === 'es' ? 'Almacena información' : 'Stores information' },
     ],
-    'query': [
-      { icon: '❓', text: currentLang === 'es' ? 'Pregunta a la base de datos' : 'Question to database' },
-      { icon: '📝', text: currentLang === 'es' ? 'Instrucciones específicas' : 'Specific instructions' },
-      { icon: '💬', text: currentLang === 'es' ? 'Comunicación con datos' : 'Data communication' }
-    ]
+    query: [
+      {
+        icon: '❓',
+        text: currentLang === 'es' ? 'Pregunta a la base de datos' : 'Question to database',
+      },
+      {
+        icon: '📝',
+        text: currentLang === 'es' ? 'Instrucciones específicas' : 'Specific instructions',
+      },
+      { icon: '💬', text: currentLang === 'es' ? 'Comunicación con datos' : 'Data communication' },
+    ],
   };
 
   const highlights = highlightsMap[contentKey];
   if (highlights) {
     const highlightsDiv = document.createElement('div');
     highlightsDiv.className = 'tutorial-highlights';
-    
+
     highlights.forEach(highlight => {
       const item = document.createElement('div');
       item.className = 'highlight-item';
@@ -1278,7 +1298,7 @@ function addTutorialHighlights(container, contentKey) {
       `;
       highlightsDiv.appendChild(item);
     });
-    
+
     container.appendChild(highlightsDiv);
   }
 }
@@ -2129,7 +2149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeTutorialSystem();
   // Automatically load first tutorial level
   loadTutorialContent('sql', 1);
-  
+
   // Setup practice query builders
   setupPracticeQueryBuilders();
 });
@@ -2141,13 +2161,16 @@ function setupPracticeQueryBuilders() {
   // Initialize practice queries for each practice level
   practiceQueries[1] = [];
   practiceQueries[2] = [];
-  
+
   // Setup event delegation for practice blocks
-  document.addEventListener('click', function(event) {
+  document.addEventListener('click', function (event) {
     if (event.target.classList.contains('practice-block')) {
       const practiceBuilder = event.target.closest('.practice-builder');
       if (practiceBuilder) {
-        const practiceId = practiceBuilder.querySelector('.practice-query-display').id.split('-').pop();
+        const practiceId = practiceBuilder
+          .querySelector('.practice-query-display')
+          .id.split('-')
+          .pop();
         addPracticeBlock(practiceId, event.target.getAttribute('data-value'));
       }
     }
@@ -2158,7 +2181,7 @@ function addPracticeBlock(practiceId, value) {
   if (!practiceQueries[practiceId]) {
     practiceQueries[practiceId] = [];
   }
-  
+
   practiceQueries[practiceId].push(value);
   updatePracticeDisplay(practiceId);
 }
@@ -2166,11 +2189,12 @@ function addPracticeBlock(practiceId, value) {
 function updatePracticeDisplay(practiceId) {
   const display = document.getElementById(`practice-query-display-${practiceId}`);
   if (!display) return;
-  
+
   if (practiceQueries[practiceId].length === 0) {
-    const placeholderText = currentLang === 'es' 
-      ? 'Haz clic en los bloques de abajo para construir tu consulta...'
-      : 'Click blocks below to build your query...';
+    const placeholderText =
+      currentLang === 'es'
+        ? 'Haz clic en los bloques de abajo para construir tu consulta...'
+        : 'Click blocks below to build your query...';
     display.innerHTML = `<span class="placeholder-text">${placeholderText}</span>`;
   } else {
     const query = practiceQueries[practiceId].join(' ');
@@ -2181,7 +2205,7 @@ function updatePracticeDisplay(practiceId) {
 function clearPracticeQuery(practiceId) {
   practiceQueries[practiceId] = [];
   updatePracticeDisplay(practiceId);
-  
+
   // Clear feedback
   const feedback = document.getElementById(`practice-feedback-${practiceId}`);
   if (feedback) {
@@ -2193,26 +2217,29 @@ function testPracticeQuery(practiceId, correctAnswer) {
   const userQuery = practiceQueries[practiceId].join(' ').replace(/\s+/g, ' ').trim();
   const expectedQuery = correctAnswer.replace(/\s+/g, ' ').trim();
   const feedback = document.getElementById(`practice-feedback-${practiceId}`);
-  
+
   if (!feedback) return;
-  
+
   if (userQuery.toLowerCase() === expectedQuery.toLowerCase()) {
-    const successMessage = currentLang === 'es' 
-      ? '🎉 ¡Correcto! Tu consulta es perfecta.'
-      : '🎉 Correct! Your query is perfect.';
+    const successMessage =
+      currentLang === 'es'
+        ? '🎉 ¡Correcto! Tu consulta es perfecta.'
+        : '🎉 Correct! Your query is perfect.';
     feedback.innerHTML = `<div class="practice-success">${successMessage}</div>`;
-    
+
     // Unlock next tutorial level if this is the current level
     unlockNextTutorialLevel();
   } else if (userQuery === '') {
-    const emptyMessage = currentLang === 'es' 
-      ? '❓ Construye tu consulta usando los bloques de arriba.'
-      : '❓ Build your query using the blocks above.';
+    const emptyMessage =
+      currentLang === 'es'
+        ? '❓ Construye tu consulta usando los bloques de arriba.'
+        : '❓ Build your query using the blocks above.';
     feedback.innerHTML = `<div class="practice-info">${emptyMessage}</div>`;
   } else {
-    const incorrectMessage = currentLang === 'es' 
-      ? '❌ No es correcto. Revisa tu consulta e inténtalo de nuevo.'
-      : '❌ Not quite right. Check your query and try again.';
+    const incorrectMessage =
+      currentLang === 'es'
+        ? '❌ No es correcto. Revisa tu consulta e inténtalo de nuevo.'
+        : '❌ Not quite right. Check your query and try again.';
     feedback.innerHTML = `<div class="practice-error">${incorrectMessage}<br><small>Tu consulta: <code>${userQuery}</code></small></div>`;
   }
 }
