@@ -64,11 +64,7 @@ function selectLanguage(lang) {
     
     // Ensure cards are properly positioned after language selection
     setTimeout(() => {
-        const cardHand = document.getElementById('card-hand');
-        if (cardHand) {
-            cardHand.style.transform = 'translateX(-50%) translateY(0)';
-            cardHand.style.opacity = '1';
-        }
+        resetCardsPosition();
     }, 300);
     
     // Initialize tutorial system after language selection
@@ -666,8 +662,7 @@ function closeTutorialMode() {
         if (cardHand) {
             setTimeout(() => {
                 // Reset to original centered position
-                cardHand.style.transform = 'translateX(-50%) translateY(0)';
-                cardHand.style.opacity = '1';
+                resetCardsPosition();
             }, 400);
         }
     }, 300);
@@ -1411,11 +1406,7 @@ function handleResize() {
     checkScreenSize();
     
     // Adjust card positioning on resize
-    const cardHand = document.getElementById('card-hand');
-    if (cardHand) {
-        cardHand.style.transform = 'translateX(-50%) translateY(0)';
-        cardHand.style.opacity = '1';
-    }
+    resetCardsPosition();
     
     // Adjust tutorial system if open
     const tutorialOverlay = document.getElementById('tutorial-overlay');
@@ -1462,3 +1453,71 @@ function resetToOriginalLayout() {
   // Clear results
   document.getElementById('results').innerHTML = '';
 }
+
+// Function to clean and reposition cards properly
+function resetCardsPosition() {
+    const cardHand = document.getElementById('card-hand');
+    if (cardHand) {
+        // Remove all inline styles to let CSS take over
+        cardHand.removeAttribute('style');
+    }
+}
+
+// Function to show cards
+function showCards() {
+    const cardHand = document.getElementById('card-hand');
+    const cardIndicator = document.querySelector('.card-indicator');
+    if (cardHand) {
+        cardHand.classList.add('show');
+    }
+    if (cardIndicator) {
+        cardIndicator.style.opacity = '0';
+    }
+}
+
+// Function to hide cards
+function hideCards() {
+    const cardHand = document.getElementById('card-hand');
+    const cardIndicator = document.querySelector('.card-indicator');
+    if (cardHand) {
+        cardHand.classList.remove('show');
+    }
+    if (cardIndicator) {
+        cardIndicator.style.opacity = '';
+    }
+}
+
+// Call this function when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        resetCardsPosition();
+    }, 500);
+    
+    // Add mouse events to the trigger zone
+    const cardTrigger = document.querySelector('.card-trigger');
+    const cardHand = document.getElementById('card-hand');
+    
+    if (cardTrigger && cardHand) {
+        cardTrigger.addEventListener('mouseenter', showCards);
+        
+        // Hide cards when mouse leaves both trigger and cards
+        let hideTimeout;
+        
+        const handleMouseLeave = () => {
+            hideTimeout = setTimeout(() => {
+                hideCards();
+            }, 1000);
+        };
+        
+        const handleMouseEnter = () => {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+            }
+            showCards();
+        };
+        
+        cardTrigger.addEventListener('mouseleave', handleMouseLeave);
+        cardHand.addEventListener('mouseenter', handleMouseEnter);
+        cardHand.addEventListener('mouseleave', handleMouseLeave);
+    }
+});
