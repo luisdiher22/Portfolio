@@ -188,7 +188,6 @@ function selectLanguage(lang) {
 
   // Initialize components after language selection
   setTimeout(() => {
-    resetCardsPosition();
     initializeTutorialSystem();
   }, 300);
 
@@ -688,6 +687,24 @@ overlay.addEventListener('click', () => {
   overlay.classList.add('hidden');
 });
 
+// Tables tab functionality
+const tabsContainer = document.getElementById('tables-tab-container');
+const tabsTab = document.getElementById('tables-tab');
+
+if (tabsTab && tabsContainer) {
+  tabsTab.addEventListener('click', () => {
+    tabsContainer.classList.toggle('expanded');
+  });
+
+  // Close tab when clicking outside
+  document.addEventListener('click', (e) => {
+    if (tabsContainer.classList.contains('expanded') && 
+        !tabsContainer.contains(e.target)) {
+      tabsContainer.classList.remove('expanded');
+    }
+  });
+}
+
 const langSwitch = document.getElementById('langSwitch');
 const langLabel = document.getElementById('lang-label');
 
@@ -1012,8 +1029,7 @@ function closeTutorialMode() {
 
     if (cardHand) {
       setTimeout(() => {
-        // Reset to original centered position
-        resetCardsPosition();
+        // Cards will be managed by the new tab system
       }, 400);
     }
   }, 300);
@@ -1874,8 +1890,7 @@ function checkScreenSize() {
 function handleResize() {
   checkScreenSize();
 
-  // Adjust card positioning on resize
-  resetCardsPosition();
+  // Cards positioning is now handled by CSS
 
   // Adjust tutorial system if open
   const tutorialOverlay = document.getElementById('tutorial-overlay');
@@ -1922,74 +1937,6 @@ function resetToOriginalLayout() {
   // Clear results
   document.getElementById('results').innerHTML = '';
 }
-
-// Function to clean and reposition cards properly
-function resetCardsPosition() {
-  const cardHand = document.getElementById('card-hand');
-  if (cardHand) {
-    // Remove all inline styles to let CSS take over
-    cardHand.removeAttribute('style');
-  }
-}
-
-// Function to show cards
-function showCards() {
-  const cardHand = document.getElementById('card-hand');
-  const cardIndicator = document.querySelector('.card-indicator');
-  if (cardHand) {
-    cardHand.classList.add('show');
-  }
-  if (cardIndicator) {
-    cardIndicator.style.opacity = '0';
-  }
-}
-
-// Function to hide cards
-function hideCards() {
-  const cardHand = document.getElementById('card-hand');
-  const cardIndicator = document.querySelector('.card-indicator');
-  if (cardHand) {
-    cardHand.classList.remove('show');
-  }
-  if (cardIndicator) {
-    cardIndicator.style.opacity = '';
-  }
-}
-
-// Call this function when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    resetCardsPosition();
-  }, 500);
-
-  // Add mouse events to the trigger zone
-  const cardTrigger = document.querySelector('.card-trigger');
-  const cardHand = document.getElementById('card-hand');
-
-  if (cardTrigger && cardHand) {
-    cardTrigger.addEventListener('mouseenter', showCards);
-
-    // Hide cards when mouse leaves both trigger and cards
-    let hideTimeout;
-
-    const handleMouseLeave = () => {
-      hideTimeout = setTimeout(() => {
-        hideCards();
-      }, 1000);
-    };
-
-    const handleMouseEnter = () => {
-      if (hideTimeout) {
-        clearTimeout(hideTimeout);
-      }
-      showCards();
-    };
-
-    cardTrigger.addEventListener('mouseleave', handleMouseLeave);
-    cardHand.addEventListener('mouseenter', handleMouseEnter);
-    cardHand.addEventListener('mouseleave', handleMouseLeave);
-  }
-});
 
 // Initialize tutorial system on page load
 document.addEventListener('DOMContentLoaded', () => {

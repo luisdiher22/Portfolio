@@ -15,6 +15,7 @@ body {
   background-attachment: fixed;
   font-family: "Press Start 2P", cursive;
   margin: 0;
+  padding: 0;
   position: relative;
   overflow: hidden !important;
   height: 100vh;
@@ -979,87 +980,100 @@ textarea:focus {
   }
 }
 
-/* ====== CARDS SISTEMA ====== */
-#card-hand {
-  position: fixed;
-  bottom: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-  padding: 0 10px;
-  z-index: 10;
-  height: 140px;
-  pointer-events: none;
-  width: 500px;
-  max-width: 95vw;
-  overflow: visible;
-  transition: bottom 0.6s ease, opacity 0.6s ease;
-  align-items: flex-start;
-}
-
-#card-hand.show {
-  bottom: 10px;
-}
-
-#card-hand:hover {
-  bottom: 10px;
-}
-
-/* Invisible trigger zone for cards */
-.card-trigger {
+/* ====== TABLES TAB SYSTEM ====== */
+#tables-tab-container {
   position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 50px;
-  z-index: 8;
-  pointer-events: auto;
-  background: transparent;
-}
-
-.card-trigger:hover ~ #card-hand {
-  bottom: 10px;
-}
-
-/* Subtle indicator for cards */
-.card-indicator {
-  position: fixed;
-  bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
-  width: 40px;
-  height: 4px;
-  background: rgb(250 153 28 / 60%);
-  border-radius: 2px;
-  z-index: 9;
-  animation: cardIndicatorPulse 3s ease-in-out infinite;
-  box-shadow: 0 0 10px rgb(250 153 28 / 30%),
-    0 0 20px rgb(250 153 28 / 10%);
+  z-index: 10;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes cardIndicatorPulse {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: translateX(-50%) scale(1);
-  }
-
-  50% {
-    opacity: 0.8;
-    transform: translateX(-50%) scale(1.1);
-  }
+#tables-tab-container.expanded {
+  transform: translateX(-50%) translateY(-150px);
 }
 
-#card-hand.show ~ .card-indicator {
+/* Tab Handle */
+.tables-tab {
+  background: linear-gradient(135deg, #fa991c 0%, #e8890b 100%);
+  border: 3px solid #032539;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  padding: 10px 20px 5px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 10px;
+  color: #032539;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  margin: 0;
+  width: fit-content;
+  min-width: 100px;
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.tables-tab:hover {
+  background: linear-gradient(135deg, #ffb347 0%, #fa991c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tab-text {
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+.tab-arrow {
+  font-size: 8px;
+  transition: transform 0.3s ease;
+}
+
+#tables-tab-container.expanded .tab-arrow {
+  transform: rotate(180deg);
+}
+
+/* Cards Container */
+#card-hand {
+  background: linear-gradient(135deg, #fbf3f2 0%, #e8e8e8 100%);
+  border: 3px solid #032539;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-width: 95vw;
+  overflow: visible;
+  margin: 0;
+  position: relative;
+}
+
+#tables-tab-container.expanded #card-hand {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .card {
   width: 70px;
   height: 90px;
   background: linear-gradient(135deg, #fbf3f2 0%, #e8e8e8 100%);
-  border-radius: 0;
+  border-radius: 8px;
   box-shadow: 2px 2px 0 0 #032539,
     4px 4px 0 0 rgb(3 37 57 / 30%);
   padding: 8px 5px;
@@ -1071,7 +1085,6 @@ textarea:focus {
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  pointer-events: auto;
   border: 3px solid #032539;
   position: relative;
   overflow: hidden;
@@ -1082,23 +1095,16 @@ textarea:focus {
 }
 
 .card:nth-child(1) { border-color: #1c768f; }
-
 .card:nth-child(2) { border-color: #fa991c; }
-
 .card:nth-child(3) { border-color: #032539; }
-
 .card:nth-child(4) { border-color: #9b59b6; }
-
 .card:nth-child(5) { border-color: #e74c3c; }
 
 .card:hover {
-  transform: translateY(-200px) rotate(0deg) translate(-1px, -1px) !important;
-  z-index: 20;
+  transform: scale(1.05);
   box-shadow: 3px 3px 0 0 #032539,
-    5px 5px 0 0 rgb(3 37 57 / 30%);
+    6px 6px 0 0 rgb(3 37 57 / 30%);
   border-color: #fa991c;
-  width: 80px;
-  height: 100px;
 }
 
 .card-title {
@@ -1127,6 +1133,7 @@ textarea:focus {
   margin: auto;
   filter: drop-shadow(0 2px 4px rgb(0 0 0 / 10%));
   z-index: 1;
+  transition: all 0.2s ease;
 }
 
 .card:hover .card-icon {
@@ -1143,16 +1150,13 @@ textarea:focus {
   height: 4px;
   background: #1c768f;
   transition: all 0.3s ease;
+  border-radius: 4px 4px 0 0;
 }
 
 .card:nth-child(1)::before { background: #1c768f; }
-
 .card:nth-child(2)::before { background: #fa991c; }
-
 .card:nth-child(3)::before { background: #032539; }
-
 .card:nth-child(4)::before { background: #9b59b6; }
-
 .card:nth-child(5)::before { background: #e74c3c; }
 
 .card:hover::before {
@@ -1599,6 +1603,76 @@ textarea:focus {
 
   .card-title {
     font-size: 4px;
+  }
+
+  .card-icon {
+    font-size: 1rem;
+  }
+}
+
+/* ====== RESPONSIVE DESIGN FOR TAB SYSTEM ====== */
+@media (max-width: 768px) {
+  #tables-tab-container.expanded {
+    transform: translateX(-50%) translateY(-130px);
+  }
+
+  .tables-tab {
+    padding: 6px 16px 6px 16px;
+    font-size: 8px;
+    min-width: 80px;
+  }
+
+  #card-hand {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .card {
+    width: 60px;
+    height: 80px;
+    padding: 6px 4px;
+  }
+
+  .card-title {
+    font-size: 5px;
+  }
+
+  .card-icon {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #tables-tab-container.expanded {
+    transform: translateX(-50%) translateY(-110px);
+  }
+
+  .tables-tab {
+    padding: 5px 12px 5px 12px;
+    font-size: 7px;
+    gap: 6px;
+  }
+
+  .tab-arrow {
+    font-size: 6px;
+  }
+
+  #card-hand {
+    padding: 12px;
+    gap: 8px;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .card {
+    width: 50px;
+    height: 70px;
+    padding: 5px 3px;
+    border-radius: 6px;
+  }
+
+  .card-title {
+    font-size: 4px;
+    margin-top: 2px;
   }
 
   .card-icon {
