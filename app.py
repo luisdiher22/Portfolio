@@ -54,7 +54,7 @@ except ImportError:
             "EXECUTE",
         }
         DEBUG = True
-        HOST = "127.0.0.1"
+        HOST = "0.0.0.0"
         PORT = 5000
 
     config = {"default": Config}
@@ -266,6 +266,17 @@ def query() -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
+
+
+@app.route("/health", methods=["GET"])
+def health_check() -> Dict[str, str]:
+    """
+    Health check endpoint for deployment monitoring.
+
+    Returns:
+        Dict[str, str]: JSON response indicating service health
+    """
+    return jsonify({"status": "healthy", "message": "Portfolio app is running"})
 
 
 @app.route("/projects", methods=["GET"])

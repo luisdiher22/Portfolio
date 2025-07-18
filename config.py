@@ -19,7 +19,7 @@ class Config:
     # Flask settings
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
     PORT = int(os.environ.get('PORT', 5000))
-    HOST = os.environ.get('HOST', '127.0.0.1')
+    HOST = os.environ.get('HOST', '0.0.0.0')
     
     # SQL Query limits
     MAX_QUERY_LENGTH = int(os.environ.get('MAX_QUERY_LENGTH', 1000))
