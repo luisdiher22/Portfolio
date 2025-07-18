@@ -39,7 +39,8 @@ class Config:
     # Blocked SQL operations (security)
     BLOCKED_SQL_OPERATIONS = {
         'DROP', 'DELETE', 'UPDATE', 'INSERT', 'ALTER', 'CREATE',
-        'TRUNCATE', 'REPLACE', 'MERGE', 'EXEC', 'EXECUTE'
+        'TRUNCATE', 'REPLACE', 'MERGE', 'EXEC', 'EXECUTE', 'UNION',
+        'OR', '--', '/*', '*/'
     }
     
     @classmethod

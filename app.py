@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 import logging
 import os
+import re
 from typing import Dict, Any, Tuple
 
 # Import configuration
@@ -109,6 +110,11 @@ BLOCKED_KEYWORDS = getattr(
         "MERGE",
         "EXEC",
         "EXECUTE",
+        "UNION",
+        "OR",
+        "--",
+        "/*",
+        "*/",
     },
 )
 ALLOWED_TABLES = {"projects", "skills", "education", "experience", "clients"}
@@ -137,29 +143,54 @@ def validate_sql_query(query: str) -> Tuple[bool, str]:
     # Convert to uppercase for keyword checking
     query_upper = query.upper()
 
-    # Block dangerous keywords
+    # Block dangerous keywords (with word boundaries)
     for keyword in BLOCKED_KEYWORDS:
-        if keyword in query_upper:
+        # Use word boundaries to match whole words
+        pattern = r"\b" + re.escape(keyword) + r"\b"
+        if re.search(pattern, query_upper):
             return False, f"Operation '{keyword}' is not allowed"
+
+    # Additional SQL injection patterns
+    injection_patterns = [
+        r"'.*'.*=.*'.*'",  # 'x'='x' patterns
+        r"1\s*=\s*1",  # 1=1 patterns
+        r"0\s*=\s*0",  # 0=0 patterns
+        r"true\s*=\s*true",  # true=true patterns
+    ]
+
+    for pattern in injection_patterns:
+        if re.search(pattern, query_upper):
+            return False, "Suspicious SQL pattern detected"
 
     # Ensure query starts with SELECT
     if not query_upper.strip().startswith("SELECT"):
         return False, "Only SELECT queries are allowed"
 
     # Check for semicolon (prevent multiple statements)
-    if query.count(";") > 1:
+    if query.count(";") > 1 or (
+        query.count(";") == 1 and not query.strip().endswith(";")
+    ):
         return False, "Multiple statements are not allowed"
 
-    # Validate table names
+    # Validate table names first
+    table_found = False
     for table in ALLOWED_TABLES:
         if table.upper() in query_upper:
+            table_found = True
             break
-    else:
+
+    if not table_found:
         return (
             False,
             f"Query must reference at least one allowed table: "
             f"{', '.join(ALLOWED_TABLES)}",
         )
+
+    # Check for multiple table references that could indicate UNION attacks
+    table_count = sum(1 for table in ALLOWED_TABLES if table.upper() in query_upper)
+    if table_count > 1 and ("UNION" in query_upper or "JOIN" not in query_upper):
+        # Allow JOINs but be suspicious of multiple tables without explicit JOINs
+        return False, "Multiple table references detected without explicit JOIN"
 
     return True, ""
 
@@ -184,7 +215,16 @@ def query() -> Dict[str, Any]:
         Dict[str, Any]: JSON response with query results or error
     """
     try:
-        sql = request.form.get("query", "").strip()
+        # Check content type
+        if not request.is_json:
+            return jsonify({"error": "Content-Type must be application/json"}), 400
+
+        # Get JSON data
+        json_data = request.get_json()
+        if not json_data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        sql = json_data.get("query", "").strip()
 
         # Validate the query
         is_valid, error_message = validate_sql_query(sql)
@@ -242,10 +282,10 @@ def projects() -> Dict[str, Any]:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM projects LIMIT 100")
 
-            columns = [desc[0] for desc in cursor.description]
-            rows = [tuple(row) for row in cursor.fetchall()]
+            # Convert rows to list of dictionaries
+            projects_list = [dict(row) for row in cursor.fetchall()]
 
-            return jsonify({"columns": columns, "rows": rows, "row_count": len(rows)})
+            return jsonify({"projects": projects_list})
 
     except sqlite3.Error as e:
         logger.error(f"Database error in projects endpoint: {str(e)}")
