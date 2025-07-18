@@ -259,13 +259,43 @@
     <!-- Tutorial Content Area -->
     <div id="tutorial-content-area">
         <div id="tutorial-content">
-            <h2 id="tutorial-title">Selecciona un tema del tutorial</h2>
-            <div id="tutorial-body">
-                <p>Haz clic en cualquiera de las tarjetas de la izquierda para comenzar a aprender SQL paso a paso.</p>
-            </div>
-            <div id="tutorial-navigation">
-                <button id="prev-tutorial" class="tutorial-nav-btn" disabled>← Anterior</button>
-                <button id="next-tutorial" class="tutorial-nav-btn" disabled>Siguiente →</button>
+            <div class="tutorial-tile">
+                <div class="tutorial-tile-header">
+                    <div class="tutorial-tile-icon">🎓</div>
+                    <h2 id="tutorial-title">Bienvenido al Tutorial de SQL</h2>
+                </div>
+                <div class="tutorial-tile-body">
+                    <div id="tutorial-body">
+                        <p>¡Aprende SQL de manera interactiva! Este tutorial te guiará paso a paso a través de los conceptos fundamentales de SQL.</p>
+                        <p>Selecciona un tema del panel izquierdo para comenzar tu aventura en el mundo de las bases de datos.</p>
+                        <div class="tutorial-highlights">
+                            <div class="highlight-item">
+                                <span class="highlight-icon">📚</span>
+                                <span>Conceptos fundamentales</span>
+                            </div>
+                            <div class="highlight-item">
+                                <span class="highlight-icon">🎯</span>
+                                <span>Práctica interactiva</span>
+                            </div>
+                            <div class="highlight-item">
+                                <span class="highlight-icon">🚀</span>
+                                <span>Progreso gradual</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tutorial-tile-footer">
+                    <div id="tutorial-navigation">
+                        <button id="prev-tutorial" class="tutorial-nav-btn" disabled>← Anterior</button>
+                        <div class="tutorial-progress">
+                            <span id="tutorial-progress-text">Nivel 0 de 11</span>
+                            <div class="progress-bar">
+                                <div id="progress-fill" class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <button id="next-tutorial" class="tutorial-nav-btn" disabled>Siguiente →</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1052,6 +1052,9 @@ function closeTutorialMode() {
 function loadTutorialContent(contentKey, level) {
   const tutorialTitle = document.getElementById('tutorial-title');
   const tutorialBody = document.getElementById('tutorial-body');
+  const tutorialIcon = document.querySelector('.tutorial-tile-icon');
+  const progressText = document.getElementById('tutorial-progress-text');
+  const progressFill = document.getElementById('progress-fill');
   const prevBtn = document.getElementById('prev-tutorial');
   const nextBtn = document.getElementById('next-tutorial');
 
@@ -1062,7 +1065,47 @@ function loadTutorialContent(contentKey, level) {
       tutorialTitle.textContent = content.title;
     }
     if (tutorialBody) {
+      // Clear existing highlights
+      const existingHighlights = tutorialBody.querySelector('.tutorial-highlights');
+      if (existingHighlights) {
+        existingHighlights.remove();
+      }
+      
       tutorialBody.innerHTML = content.body;
+      
+      // Add detailed highlights based on content type
+      addTutorialHighlights(tutorialBody, contentKey);
+    }
+
+    // Update icon based on content
+    if (tutorialIcon) {
+      const iconMap = {
+        'sql': '📚',
+        'table': '📊', 
+        'query': '❓',
+        'structure': '🏗️',
+        'select': '🔍',
+        'asterisk': '⭐',
+        'from': '📍',
+        'where': '🎯',
+        'operators': '⚖️',
+        'querypractice1': '🎯',
+        'querypractice2': '🔎'
+      };
+      tutorialIcon.textContent = iconMap[contentKey] || '🎓';
+    }
+
+    // Update progress
+    const totalLevels = 11;
+    const progressPercentage = (level / totalLevels) * 100;
+    
+    if (progressText) {
+      const levelText = currentLang === 'es' ? `Nivel ${level} de ${totalLevels}` : `Level ${level} of ${totalLevels}`;
+      progressText.textContent = levelText;
+    }
+    
+    if (progressFill) {
+      progressFill.style.width = `${progressPercentage}%`;
     }
 
     // Setup reveal buttons for practice sections
@@ -1094,6 +1137,49 @@ function loadTutorialContent(contentKey, level) {
     }
   } else {
     console.error('No content found for:', contentKey, 'in language:', currentLang);
+  }
+}
+
+/**
+ * Add contextual highlights to tutorial content
+ * @param {HTMLElement} container - The container to add highlights to
+ * @param {string} contentKey - The content type key
+ */
+function addTutorialHighlights(container, contentKey) {
+  const highlightsMap = {
+    'sql': [
+      { icon: '💾', text: currentLang === 'es' ? 'Lenguaje para bases de datos' : 'Database query language' },
+      { icon: '🔧', text: currentLang === 'es' ? 'Herramienta poderosa' : 'Powerful tool' },
+      { icon: '🌐', text: currentLang === 'es' ? 'Estándar mundial' : 'Global standard' }
+    ],
+    'table': [
+      { icon: '📋', text: currentLang === 'es' ? 'Estructura organizada' : 'Organized structure' },
+      { icon: '📊', text: currentLang === 'es' ? 'Filas y columnas' : 'Rows and columns' },
+      { icon: '🗃️', text: currentLang === 'es' ? 'Almacena información' : 'Stores information' }
+    ],
+    'query': [
+      { icon: '❓', text: currentLang === 'es' ? 'Pregunta a la base de datos' : 'Question to database' },
+      { icon: '📝', text: currentLang === 'es' ? 'Instrucciones específicas' : 'Specific instructions' },
+      { icon: '💬', text: currentLang === 'es' ? 'Comunicación con datos' : 'Data communication' }
+    ]
+  };
+
+  const highlights = highlightsMap[contentKey];
+  if (highlights) {
+    const highlightsDiv = document.createElement('div');
+    highlightsDiv.className = 'tutorial-highlights';
+    
+    highlights.forEach(highlight => {
+      const item = document.createElement('div');
+      item.className = 'highlight-item';
+      item.innerHTML = `
+        <span class="highlight-icon">${highlight.icon}</span>
+        <span>${highlight.text}</span>
+      `;
+      highlightsDiv.appendChild(item);
+    });
+    
+    container.appendChild(highlightsDiv);
   }
 }
 
