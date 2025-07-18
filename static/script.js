@@ -599,11 +599,57 @@ const cueData = {
     },
     querypractice1: {
       title: 'Practice 1: Simple query',
-      body: 'Write a query that selects all fields from the \'clients\' table.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT * FROM clients;</code></div>',
+      body: `Write a query that selects all fields from the 'clients' table.<br><br>
+        <div class="practice-query-builder">
+          <h4>🔧 Interactive Query Builder</h4>
+          <div class="practice-builder">
+            <div class="practice-query-display" id="practice-query-display-1">
+              <span class="placeholder-text">Click blocks below to build your query...</span>
+            </div>
+            <div class="practice-blocks">
+              <div class="practice-block" data-value="SELECT">SELECT</div>
+              <div class="practice-block" data-value="*">*</div>
+              <div class="practice-block" data-value="FROM">FROM</div>
+              <div class="practice-block table-block" data-value="clients">clients</div>
+              <div class="practice-block" data-value=";">;</div>
+            </div>
+            <div class="practice-actions">
+              <button class="practice-clear-btn" onclick="clearPracticeQuery(1)">Clear</button>
+              <button class="practice-test-btn" onclick="testPracticeQuery(1, 'SELECT * FROM clients;')">Test Query</button>
+            </div>
+            <div class="practice-feedback" id="practice-feedback-1"></div>
+          </div>
+        </div>
+        <br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT * FROM clients;</code></div>`,
     },
     querypractice2: {
       title: 'Practice 2: Filtering',
-      body: 'Write a query that selects names of clients older than 30.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT name FROM clients WHERE age &gt; 30;</code></div>',
+      body: `Write a query that selects names of clients older than 30.<br><br>
+        <div class="practice-query-builder">
+          <h4>🔧 Interactive Query Builder</h4>
+          <div class="practice-builder">
+            <div class="practice-query-display" id="practice-query-display-2">
+              <span class="placeholder-text">Click blocks below to build your query...</span>
+            </div>
+            <div class="practice-blocks">
+              <div class="practice-block" data-value="SELECT">SELECT</div>
+              <div class="practice-block" data-value="name">name</div>
+              <div class="practice-block" data-value="FROM">FROM</div>
+              <div class="practice-block table-block" data-value="clients">clients</div>
+              <div class="practice-block" data-value="WHERE">WHERE</div>
+              <div class="practice-block" data-value="age">age</div>
+              <div class="practice-block" data-value=">">></div>
+              <div class="practice-block" data-value="30">30</div>
+              <div class="practice-block" data-value=";">;</div>
+            </div>
+            <div class="practice-actions">
+              <button class="practice-clear-btn" onclick="clearPracticeQuery(2)">Clear</button>
+              <button class="practice-test-btn" onclick="testPracticeQuery(2, 'SELECT name FROM clients WHERE age > 30;')">Test Query</button>
+            </div>
+            <div class="practice-feedback" id="practice-feedback-2"></div>
+          </div>
+        </div>
+        <br><button class="reveal-btn" onclick="revealAnswer(this)">Show answer</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Answer: <code>SELECT name FROM clients WHERE age &gt; 30;</code></div>`,
     },
   },
   es: {
@@ -645,11 +691,57 @@ const cueData = {
     },
     querypractice1: {
       title: 'Práctica 1: Consulta simple',
-      body: 'Escribe una consulta que seleccione todos los campos de la tabla \'clientes\'.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT * FROM clientes;</code></div>',
+      body: `Escribe una consulta que seleccione todos los campos de la tabla 'clientes'.<br><br>
+        <div class="practice-query-builder">
+          <h4>🔧 Constructor Interactivo de Consultas</h4>
+          <div class="practice-builder">
+            <div class="practice-query-display" id="practice-query-display-1">
+              <span class="placeholder-text">Haz clic en los bloques de abajo para construir tu consulta...</span>
+            </div>
+            <div class="practice-blocks">
+              <div class="practice-block" data-value="SELECT">SELECT</div>
+              <div class="practice-block" data-value="*">*</div>
+              <div class="practice-block" data-value="FROM">FROM</div>
+              <div class="practice-block table-block" data-value="clients">clients</div>
+              <div class="practice-block" data-value=";">;</div>
+            </div>
+            <div class="practice-actions">
+              <button class="practice-clear-btn" onclick="clearPracticeQuery(1)">Limpiar</button>
+              <button class="practice-test-btn" onclick="testPracticeQuery(1, 'SELECT * FROM clients;')">Probar Consulta</button>
+            </div>
+            <div class="practice-feedback" id="practice-feedback-1"></div>
+          </div>
+        </div>
+        <br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT * FROM clients;</code></div>`,
     },
     querypractice2: {
       title: 'Práctica 2: Filtrado',
-      body: 'Escribe una consulta que seleccione los nombres de los clientes mayores de 30 años.<br><br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT nombre FROM clientes WHERE edad &gt; 30;</code></div>',
+      body: `Escribe una consulta que seleccione los nombres de los clientes mayores de 30 años.<br><br>
+        <div class="practice-query-builder">
+          <h4>🔧 Constructor Interactivo de Consultas</h4>
+          <div class="practice-builder">
+            <div class="practice-query-display" id="practice-query-display-2">
+              <span class="placeholder-text">Haz clic en los bloques de abajo para construir tu consulta...</span>
+            </div>
+            <div class="practice-blocks">
+              <div class="practice-block" data-value="SELECT">SELECT</div>
+              <div class="practice-block" data-value="name">name</div>
+              <div class="practice-block" data-value="FROM">FROM</div>
+              <div class="practice-block table-block" data-value="clients">clients</div>
+              <div class="practice-block" data-value="WHERE">WHERE</div>
+              <div class="practice-block" data-value="age">age</div>
+              <div class="practice-block" data-value=">">></div>
+              <div class="practice-block" data-value="30">30</div>
+              <div class="practice-block" data-value=";">;</div>
+            </div>
+            <div class="practice-actions">
+              <button class="practice-clear-btn" onclick="clearPracticeQuery(2)">Limpiar</button>
+              <button class="practice-test-btn" onclick="testPracticeQuery(2, 'SELECT name FROM clients WHERE age > 30;')">Probar Consulta</button>
+            </div>
+            <div class="practice-feedback" id="practice-feedback-2"></div>
+          </div>
+        </div>
+        <br><button class="reveal-btn" onclick="revealAnswer(this)">Mostrar respuesta</button><div class="hidden-answer" style="display: none; margin-top: 12px;">Respuesta: <code>SELECT name FROM clients WHERE age &gt; 30;</code></div>`,
     },
   },
 };
@@ -1116,6 +1208,14 @@ function loadTutorialContent(contentKey, level) {
         answerDiv.style.display = 'block';
         this.style.display = 'none';
       });
+    }
+
+    // Initialize practice query builders for practice levels
+    if (contentKey.startsWith('querypractice')) {
+      const practiceId = contentKey === 'querypractice1' ? 1 : 2;
+      // Reset practice query for this level
+      practiceQueries[practiceId] = [];
+      updatePracticeDisplay(practiceId);
     }
 
     currentTutorialLevel = level;
@@ -2029,4 +2129,90 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeTutorialSystem();
   // Automatically load first tutorial level
   loadTutorialContent('sql', 1);
+  
+  // Setup practice query builders
+  setupPracticeQueryBuilders();
 });
+
+// Practice Query Builder Functionality
+let practiceQueries = {};
+
+function setupPracticeQueryBuilders() {
+  // Initialize practice queries for each practice level
+  practiceQueries[1] = [];
+  practiceQueries[2] = [];
+  
+  // Setup event delegation for practice blocks
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('practice-block')) {
+      const practiceBuilder = event.target.closest('.practice-builder');
+      if (practiceBuilder) {
+        const practiceId = practiceBuilder.querySelector('.practice-query-display').id.split('-').pop();
+        addPracticeBlock(practiceId, event.target.getAttribute('data-value'));
+      }
+    }
+  });
+}
+
+function addPracticeBlock(practiceId, value) {
+  if (!practiceQueries[practiceId]) {
+    practiceQueries[practiceId] = [];
+  }
+  
+  practiceQueries[practiceId].push(value);
+  updatePracticeDisplay(practiceId);
+}
+
+function updatePracticeDisplay(practiceId) {
+  const display = document.getElementById(`practice-query-display-${practiceId}`);
+  if (!display) return;
+  
+  if (practiceQueries[practiceId].length === 0) {
+    const placeholderText = currentLang === 'es' 
+      ? 'Haz clic en los bloques de abajo para construir tu consulta...'
+      : 'Click blocks below to build your query...';
+    display.innerHTML = `<span class="placeholder-text">${placeholderText}</span>`;
+  } else {
+    const query = practiceQueries[practiceId].join(' ');
+    display.innerHTML = `<code>${query}</code>`;
+  }
+}
+
+function clearPracticeQuery(practiceId) {
+  practiceQueries[practiceId] = [];
+  updatePracticeDisplay(practiceId);
+  
+  // Clear feedback
+  const feedback = document.getElementById(`practice-feedback-${practiceId}`);
+  if (feedback) {
+    feedback.innerHTML = '';
+  }
+}
+
+function testPracticeQuery(practiceId, correctAnswer) {
+  const userQuery = practiceQueries[practiceId].join(' ').replace(/\s+/g, ' ').trim();
+  const expectedQuery = correctAnswer.replace(/\s+/g, ' ').trim();
+  const feedback = document.getElementById(`practice-feedback-${practiceId}`);
+  
+  if (!feedback) return;
+  
+  if (userQuery.toLowerCase() === expectedQuery.toLowerCase()) {
+    const successMessage = currentLang === 'es' 
+      ? '🎉 ¡Correcto! Tu consulta es perfecta.'
+      : '🎉 Correct! Your query is perfect.';
+    feedback.innerHTML = `<div class="practice-success">${successMessage}</div>`;
+    
+    // Unlock next tutorial level if this is the current level
+    unlockNextTutorialLevel();
+  } else if (userQuery === '') {
+    const emptyMessage = currentLang === 'es' 
+      ? '❓ Construye tu consulta usando los bloques de arriba.'
+      : '❓ Build your query using the blocks above.';
+    feedback.innerHTML = `<div class="practice-info">${emptyMessage}</div>`;
+  } else {
+    const incorrectMessage = currentLang === 'es' 
+      ? '❌ No es correcto. Revisa tu consulta e inténtalo de nuevo.'
+      : '❌ Not quite right. Check your query and try again.';
+    feedback.innerHTML = `<div class="practice-error">${incorrectMessage}<br><small>Tu consulta: <code>${userQuery}</code></small></div>`;
+  }
+}
