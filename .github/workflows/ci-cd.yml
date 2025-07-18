@@ -67,13 +67,18 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18'
+        cache: 'npm'
+    
+    - name: Verify package-lock.json
+      run: |
+        if [ ! -f package-lock.json ]; then
+          echo "package-lock.json not found. Running npm install..."
+          npm install
+        fi
     
     - name: Install dependencies
       run: |
-        npm install
-        chmod +x ./node_modules/.bin/eslint
-        chmod +x ./node_modules/.bin/prettier
-        chmod +x ./node_modules/.bin/stylelint
+        npm ci
     
     - name: Lint JavaScript
       run: |

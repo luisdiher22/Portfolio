@@ -213,8 +213,7 @@ def query() -> Dict[str, Any]:
             result_rows = [tuple(row) for row in rows]
 
             logger.info(
-                f"Query executed successfully. Returned {
-                    len(result_rows)} rows"
+                f"Query executed successfully. Returned " f"{len(result_rows)} rows"
             )
 
             return jsonify(
