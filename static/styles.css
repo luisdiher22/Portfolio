@@ -45,17 +45,22 @@ html {
 }
 
 .language-popup-content h2 {
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: normal;
+    font-family: 'Press Start 2P', cursive;
     color: #032539;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    text-transform: uppercase;
 }
 
 .language-popup-content p {
-    font-size: 1.1rem;
+    font-size: 10px;
     color: #1C768F;
     margin-bottom: 30px;
-    font-weight: 400;
+    font-weight: normal;
+    font-family: 'Press Start 2P', cursive;
+    line-height: 1.6;
 }
 
 .language-options {
@@ -127,8 +132,11 @@ html {
 }
 
 .language-btn .lang-name {
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 8px;
+    font-weight: normal;
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    line-height: 1.4;
 }
 
 @keyframes popupSlideIn {
@@ -145,11 +153,13 @@ html {
 body {
     background: linear-gradient(135deg, #032539 0%, #1C768F 100%);
     background-attachment: fixed;
-    font-family: 'Jost', sans-serif;
+    font-family: 'Press Start 2P', cursive;
     margin: 0;
     position: relative;
     overflow: hidden !important; /* Prevent all scrolling */
     height: 100vh; /* Fixed height */
+    font-size: 12px; /* Smaller font size for pixel font */
+    line-height: 1.6; /* Better line height for pixel font */
 }
 
 /* Apply blur to main content instead of body */
@@ -216,8 +226,14 @@ body::before {
 
 .floating-circle {
     position: absolute;
-    border-radius: 50%;
-    opacity: 0.1;
+    border-radius: 0; /* Convertir círculos en cuadrados pixelados */
+    opacity: 0.15;
+    image-rendering: pixelated;
+    /* Crear octágono pixelado usando clip-path */
+    clip-path: polygon(
+        25% 0%, 75% 0%, 100% 25%, 100% 75%, 
+        75% 100%, 25% 100%, 0% 75%, 0% 25%
+    );
 }
 
 .circle-1 {
@@ -227,6 +243,10 @@ body::before {
     top: 10%;
     left: 10%;
     animation: float1 20s ease-in-out infinite;
+    border: 2px solid #032539;
+    box-shadow: 
+        2px 2px 0 0 rgba(3, 37, 57, 0.3),
+        4px 4px 0 0 rgba(3, 37, 57, 0.1);
 }
 
 .circle-2 {
@@ -236,6 +256,10 @@ body::before {
     top: 60%;
     right: 15%;
     animation: float2 25s ease-in-out infinite;
+    border: 2px solid #032539;
+    box-shadow: 
+        2px 2px 0 0 rgba(3, 37, 57, 0.3),
+        4px 4px 0 0 rgba(3, 37, 57, 0.1);
 }
 
 .circle-3 {
@@ -249,8 +273,10 @@ body::before {
 
 .floating-square {
     position: absolute;
-    opacity: 0.08;
+    opacity: 0.12;
     transform: rotate(45deg);
+    image-rendering: pixelated;
+    border: 2px solid #032539;
 }
 
 .square-1 {
@@ -260,6 +286,9 @@ body::before {
     top: 30%;
     right: 25%;
     animation: rotate1 40s linear infinite;
+    box-shadow: 
+        2px 2px 0 0 rgba(3, 37, 57, 0.3),
+        4px 4px 0 0 rgba(3, 37, 57, 0.1);
 }
 
 .square-2 {
@@ -269,6 +298,9 @@ body::before {
     top: 70%;
     left: 60%;
     animation: rotate2 35s linear infinite;
+    box-shadow: 
+        2px 2px 0 0 rgba(3, 37, 57, 0.3),
+        4px 4px 0 0 rgba(3, 37, 57, 0.1);
 }
 
 .floating-triangle {
@@ -289,32 +321,38 @@ body::before {
 
 @keyframes float1 {
     0%, 100% { transform: translateY(0px) translateX(0px); }
-    25% { transform: translateY(-20px) translateX(10px); }
-    50% { transform: translateY(10px) translateX(-10px); }
-    75% { transform: translateY(-10px) translateX(20px); }
+    25% { transform: translateY(-16px) translateX(8px); }
+    50% { transform: translateY(8px) translateX(-8px); }
+    75% { transform: translateY(-8px) translateX(16px); }
 }
 
 @keyframes float2 {
     0%, 100% { transform: translateY(0px) translateX(0px); }
-    33% { transform: translateY(15px) translateX(-15px); }
-    66% { transform: translateY(-15px) translateX(15px); }
+    33% { transform: translateY(12px) translateX(-12px); }
+    66% { transform: translateY(-12px) translateX(12px); }
 }
 
 @keyframes float3 {
     0%, 100% { transform: translateY(0px) translateX(0px); }
-    20% { transform: translateY(-25px) translateX(5px); }
-    40% { transform: translateY(5px) translateX(-20px); }
-    60% { transform: translateY(20px) translateX(10px); }
-    80% { transform: translateY(-5px) translateX(-5px); }
+    20% { transform: translateY(-20px) translateX(4px); }
+    40% { transform: translateY(4px) translateX(-16px); }
+    60% { transform: translateY(16px) translateX(8px); }
+    80% { transform: translateY(-4px) translateX(-4px); }
 }
 
 @keyframes rotate1 {
     0% { transform: rotate(45deg); }
+    25% { transform: rotate(135deg); }
+    50% { transform: rotate(225deg); }
+    75% { transform: rotate(315deg); }
     100% { transform: rotate(405deg); }
 }
 
 @keyframes rotate2 {
     0% { transform: rotate(45deg); }
+    25% { transform: rotate(-45deg); }
+    50% { transform: rotate(-135deg); }
+    75% { transform: rotate(-225deg); }
     100% { transform: rotate(-315deg); }
 }
 
@@ -330,33 +368,68 @@ body::before {
 textarea {
     width: 100%;
     height: 120px;
-    font-family: monospace;
-    font-size: 1rem;
-    border: 1px solid #1C768F;
-    border-radius: 8px;
-    padding: 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    border: 3px solid #032539;
+    border-radius: 0; /* Sin border-radius para pixel art */
+    padding: 12px;
     resize: vertical;
     box-sizing: border-box;
     background-color: #FBF3F2;
     color: #032539;
+    image-rendering: pixelated;
+    line-height: 1.8; /* Better line height for pixel font */
+    
+    /* Sombra pixelada interna */
+    box-shadow: 
+        inset 2px 2px 0 0 rgba(3, 37, 57, 0.1),
+        3px 3px 0 0 rgba(3, 37, 57, 0.3);
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #FA991C;
+    box-shadow: 
+        inset 2px 2px 0 0 rgba(3, 37, 57, 0.1),
+        3px 3px 0 0 #FA991C,
+        6px 6px 0 0 rgba(250, 153, 28, 0.3);
 }
 
 button {
     margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 6px;
-    background-color: #032539;
-    color: white;
+    padding: 12px 24px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    font-weight: normal; /* Press Start 2P doesn't need bold */
+    border: 3px solid #032539;
+    border-radius: 0; /* Sin border-radius para pixel art */
+    background: #1C768F;
+    color: #FBF3F2;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    image-rendering: pixelated;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    /* Sombra pixelada */
+    box-shadow: 
+        3px 3px 0 0 #032539,
+        6px 6px 0 0 rgba(3, 37, 57, 0.3);
 }
 
-
 button:hover {
-    background-color: #FA991C;
+    background: #FA991C;
+    transform: translate(-1px, -1px);
+    box-shadow: 
+        4px 4px 0 0 #032539,
+        7px 7px 0 0 rgba(3, 37, 57, 0.3);
+}
+
+button:active {
+    transform: translate(1px, 1px);
+    box-shadow: 
+        2px 2px 0 0 #032539,
+        4px 4px 0 0 rgba(3, 37, 57, 0.3);
 }
 
 table {
@@ -504,40 +577,46 @@ th, td {
 
 #card-hand {
     position: fixed;
-    bottom: -5px; /* Almost fully visible */
+    bottom: -120px; /* Bajar mucho más para que solo se vea la parte superior */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 8px; /* Larger positive gap */
-    padding: 0 5px; /* Smaller padding */
+    gap: 20px; /* Más espacio entre tarjetas */
+    padding: 0 10px;
     z-index: 10;
-    height: 140px; /* Much smaller height */
+    height: 140px; /* Más altura para acomodar nombres */
     pointer-events: none;
-    width: 400px; /* Much smaller width */
-    max-width: 95vw; /* Prevent horizontal overflow */
+    width: 500px; /* Más ancho para acomodar mejor */
+    max-width: 95vw;
     overflow: visible;
     transition: transform 0.6s ease, opacity 0.6s ease;
+    align-items: flex-start; /* Alinear arriba para que las tarjetas estén en la misma línea */
 }
 .card {
-    width: 60px; /* Much smaller default */
-    height: 80px; /* Much smaller default */
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 20px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    padding: 6px 3px; /* Smaller padding */
+    width: 70px; /* Un poco más ancho */
+    height: 90px; /* Un poco más alto para incluir el nombre */
+    background: linear-gradient(135deg, #FBF3F2 0%, #E8E8E8 100%);
+    border-radius: 0; /* Sin border-radius para pixel art */
+    box-shadow: 
+        2px 2px 0 0 #032539,
+        4px 4px 0 0 rgba(3, 37, 57, 0.3);
+    padding: 8px 5px; /* Un poco más de padding */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start; /* Alinear contenido arriba */
     font-weight: 600;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.25s ease, z-index 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    transition: all 0.2s ease;
     pointer-events: auto;
-    border: 3px solid #1C768F;
+    border: 3px solid #032539;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* Volver a hidden para contenido interno */
     flex-shrink: 0;
+    image-rendering: pixelated;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
 }
 
 .card::before {
@@ -551,18 +630,19 @@ th, td {
 }
 
 .card-title {
-    font-size: 0.6rem; /* Smaller font for smaller cards */
+    font-size: 6px; /* Smaller font for Press Start 2P */
     color: #032539;
-    font-weight: 700;
-    margin-top: 3px; /* Smaller margin */
+    font-weight: normal; /* Press Start 2P doesn't need bold */
+    font-family: 'Press Start 2P', cursive;
+    margin-top: 3px; /* Margen pequeño arriba */
     z-index: 1;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    line-height: 1.4;
     position: relative;
     display: block;
     width: 100%;
     text-align: center;
-    line-height: 1.2;
 }
 
 .card-icon {
@@ -579,27 +659,27 @@ th, td {
 }
 
 .card:nth-child(1) {
-    transform: rotate(-18deg) translateY(120px);
+    transform: rotate(0deg) translateY(0px);
     border-color: #1C768F;
 }
 
 .card:nth-child(2) {
-    transform: rotate(-9deg) translateY(90px);
+    transform: rotate(0deg) translateY(0px);
     border-color: #FA991C;
 }
 
 .card:nth-child(3) {
-    transform: rotate(0deg) translateY(70px);
+    transform: rotate(0deg) translateY(0px);
     border-color: #032539;
 }
 
 .card:nth-child(4) {
-    transform: rotate(9deg) translateY(90px);
+    transform: rotate(0deg) translateY(0px);
     border-color: #9B59B6;
 }
 
 .card:nth-child(5) {
-    transform: rotate(18deg) translateY(120px);
+    transform: rotate(0deg) translateY(0px);
     border-color: #E74C3C;
 }
 
@@ -625,22 +705,29 @@ th, td {
 }
 
 .card:hover {
-    transform: translateY(-70px) rotate(0deg) !important;
+    transform: translateY(-200px) rotate(0deg) translate(-1px, -1px) !important;
     z-index: 20;
-    box-shadow: 0 16px 28px rgba(0,0,0,0.3);
+    box-shadow: 
+        3px 3px 0 0 #032539,
+        5px 5px 0 0 rgba(3, 37, 57, 0.3);
+    border-color: #FA991C;
+    width: 80px; /* Un poco más ancho en hover */
+    height: 100px; /* Un poco más alto en hover */
 }
 
 .card:hover .card-icon {
     transform: scale(1.1);
-    filter: drop-shadow(0 4px 8px rgba(250, 153, 28, 0.3));
+    filter: drop-shadow(2px 2px 0 rgba(250, 153, 28, 0.6));
 }
 
 .card:hover .card-title {
     color: #FA991C;
+    text-shadow: 1px 1px 0 #032539;
 }
 
 .card:hover::before {
     height: 6px;
+    background: #FA991C;
 }
 
 /* Specific hover effects for each card */
@@ -791,7 +878,7 @@ th, td {
     transform: translateY(-50%) scale(0.8); /* Visible scale */
     z-index: 1000;
     transition: right 0.6s ease;
-    animation: chibiPeek 4s ease-in-out infinite;
+    animation: chibiPeek 3s ease-in-out infinite;
 }
 
 #chibi-helper:hover {
@@ -801,109 +888,155 @@ th, td {
 #chibi-character {
     position: relative;
     cursor: pointer;
-    transition: transform 0.3s ease;
-    width: 140px;
-    height: 180px;
+    transition: all 0.3s ease;
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    transform-origin: center;
+    
+    /* Robot pixel art usando box-shadow */
+    background: transparent;
+    box-shadow: 
+        /* Cabeza del robot - fila 1 */
+        8px 0px 0 2px #032539,
+        10px 0px 0 2px #032539,
+        12px 0px 0 2px #032539,
+        14px 0px 0 2px #032539,
+        16px 0px 0 2px #032539,
+        18px 0px 0 2px #032539,
+        20px 0px 0 2px #032539,
+        22px 0px 0 2px #032539,
+        /* Cabeza - fila 2 */
+        6px 2px 0 2px #032539,
+        8px 2px 0 2px #1C768F,
+        10px 2px 0 2px #1C768F,
+        12px 2px 0 2px #1C768F,
+        14px 2px 0 2px #1C768F,
+        16px 2px 0 2px #1C768F,
+        18px 2px 0 2px #1C768F,
+        20px 2px 0 2px #1C768F,
+        22px 2px 0 2px #1C768F,
+        24px 2px 0 2px #032539,
+        /* Ojos - fila 3 */
+        6px 4px 0 2px #032539,
+        8px 4px 0 2px #1C768F,
+        10px 4px 0 2px #FA991C,
+        12px 4px 0 2px #1C768F,
+        14px 4px 0 2px #1C768F,
+        16px 4px 0 2px #1C768F,
+        18px 4px 0 2px #FA991C,
+        20px 4px 0 2px #1C768F,
+        22px 4px 0 2px #1C768F,
+        24px 4px 0 2px #032539,
+        /* Cara - fila 4 */
+        6px 6px 0 2px #032539,
+        8px 6px 0 2px #1C768F,
+        10px 6px 0 2px #1C768F,
+        12px 6px 0 2px #1C768F,
+        14px 6px 0 2px #FBF3F2,
+        16px 6px 0 2px #FBF3F2,
+        18px 6px 0 2px #1C768F,
+        20px 6px 0 2px #1C768F,
+        22px 6px 0 2px #1C768F,
+        24px 6px 0 2px #032539,
+        /* Antenas */
+        10px -2px 0 2px #FA991C,
+        20px -2px 0 2px #FA991C,
+        /* Cuerpo */
+        8px 8px 0 2px #032539,
+        10px 8px 0 2px #032539,
+        12px 8px 0 2px #032539,
+        14px 8px 0 2px #032539,
+        16px 8px 0 2px #032539,
+        18px 8px 0 2px #032539,
+        20px 8px 0 2px #032539,
+        22px 8px 0 2px #032539;
 }
 
 #chibi-character:hover {
-    transform: scale(1.05);
+    transform: scale(1.3);
+    /* Animación con ojos brillantes */
+    box-shadow: 
+        /* Misma cabeza */
+        8px 0px 0 2px #032539,
+        10px 0px 0 2px #032539,
+        12px 0px 0 2px #032539,
+        14px 0px 0 2px #032539,
+        16px 0px 0 2px #032539,
+        18px 0px 0 2px #032539,
+        20px 0px 0 2px #032539,
+        22px 0px 0 2px #032539,
+        6px 2px 0 2px #032539,
+        8px 2px 0 2px #1C768F,
+        10px 2px 0 2px #1C768F,
+        12px 2px 0 2px #1C768F,
+        14px 2px 0 2px #1C768F,
+        16px 2px 0 2px #1C768F,
+        18px 2px 0 2px #1C768F,
+        20px 2px 0 2px #1C768F,
+        22px 2px 0 2px #1C768F,
+        24px 2px 0 2px #032539,
+        /* Ojos brillantes */
+        6px 4px 0 2px #032539,
+        8px 4px 0 2px #1C768F,
+        10px 4px 0 2px #ffffff,
+        12px 4px 0 2px #1C768F,
+        14px 4px 0 2px #1C768F,
+        16px 4px 0 2px #1C768F,
+        18px 4px 0 2px #ffffff,
+        20px 4px 0 2px #1C768F,
+        22px 4px 0 2px #1C768F,
+        24px 4px 0 2px #032539,
+        6px 6px 0 2px #032539,
+        8px 6px 0 2px #1C768F,
+        10px 6px 0 2px #1C768F,
+        12px 6px 0 2px #1C768F,
+        14px 6px 0 2px #FBF3F2,
+        16px 6px 0 2px #FBF3F2,
+        18px 6px 0 2px #1C768F,
+        20px 6px 0 2px #1C768F,
+        22px 6px 0 2px #1C768F,
+        24px 6px 0 2px #032539,
+        /* Antenas brillantes */
+        10px -2px 0 2px #ffffff,
+        20px -2px 0 2px #ffffff,
+        8px 8px 0 2px #032539,
+        10px 8px 0 2px #032539,
+        12px 8px 0 2px #032539,
+        14px 8px 0 2px #032539,
+        16px 8px 0 2px #032539,
+        18px 8px 0 2px #032539,
+        20px 8px 0 2px #032539,
+        22px 8px 0 2px #032539;
 }
 
-.chibi-head {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(145deg, #FFE4B5, #F4A460);
-    border-radius: 50%;
-    margin: 0 auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border: 3px solid #FA991C;
-}
-
-.chibi-eyes {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-}
-
-.eye {
-    font-size: 18px;
-    animation: blink 3s infinite;
-}
-
-.chibi-mouth {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 20px;
-    animation: smile 2s ease-in-out infinite alternate;
-}
-
-.chibi-body {
-    position: relative;
-    width: 60px;
-    height: 40px;
-    background: linear-gradient(145deg, #1C768F, #032539);
-    border-radius: 30px 30px 10px 10px;
-    margin: 5px auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.chibi-arms {
-    position: absolute;
-    top: 5px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.arm {
-    font-size: 14px;
-    animation: wave 2s ease-in-out infinite alternate;
-}
-
-.left-arm {
-    transform: rotate(-20deg);
-    animation-delay: 0.5s;
-}
-
-.right-arm {
-    transform: rotate(20deg);
-}
-
-.chibi-face {
-    font-size: 4rem;
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #FA991C, #FBF3F2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    border: 4px solid #032539;
-    animation: chibiFloat 3s ease-in-out infinite;
+/* Eliminar los elementos del diseño anterior */
+#chibi-character::before,
+#chibi-character::after {
+    display: none;
 }
 
 .chibi-speech-bubble {
     position: absolute;
-    right: 120px; /* Positioned to the left of the character */
+    right: 80px;
     top: -10px;
-    background: rgba(251, 243, 242, 0.95);
-    backdrop-filter: blur(10px);
-    border: 2px solid #FA991C;
-    border-radius: 20px;
+    background: #FBF3F2;
+    border: 3px solid #032539;
+    border-radius: 0; /* Sin border-radius para pixel art */
     padding: 12px 16px;
     max-width: 200px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    image-rendering: pixelated;
     opacity: 0;
-    transform: translateX(20px);
+    transform: translateX(15px);
     transition: all 0.3s ease;
+    z-index: 10;
+    
+    /* Borde pixelado con sombra */
+    box-shadow: 
+        3px 3px 0 0 #032539,
+        6px 6px 0 0 rgba(3, 37, 57, 0.3);
 }
 
 #chibi-helper:hover .chibi-speech-bubble {
@@ -912,56 +1045,71 @@ th, td {
 }
 
 .bubble-text {
-    font-size: 14px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
     color: #032539;
-    font-weight: 500;
+    font-weight: normal;
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.8;
+    margin: 0;
+    image-rendering: pixelated;
 }
 
 .bubble-tail {
     position: absolute;
-    right: -10px;
+    right: -12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid #FA991C;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    
+    /* Crear cola pixelada usando box-shadow */
+    box-shadow: 
+        0 -3px 0 0 #032539,
+        0 0 0 0 #032539,
+        0 3px 0 0 #032539,
+        3px -3px 0 0 #FBF3F2,
+        3px 0 0 0 #FBF3F2,
+        3px 3px 0 0 #FBF3F2,
+        6px 0 0 0 #FBF3F2,
+        9px 0 0 0 #FBF3F2;
 }
 
 .bubble-tail::after {
-    content: '';
-    position: absolute;
-    right: 2px;
-    top: -6px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid rgba(251, 243, 242, 0.95);
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
+    display: none; /* Eliminamos el triángulo suave */
 }
 
-/* Character animations */
-@keyframes blink {
-    0%, 90%, 100% { opacity: 1; }
-    95% { opacity: 0; }
+/* Professional help widget animations */
+@keyframes helpPulse {
+    0%, 100% { 
+        box-shadow: 0 4px 20px rgba(28, 118, 143, 0.3);
+        transform: translateY(-50%) scale(0.8);
+    }
+    50% { 
+        box-shadow: 0 6px 25px rgba(28, 118, 143, 0.4);
+        transform: translateY(-50%) scale(0.82);
+    }
 }
 
-@keyframes smile {
-    0%, 100% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.1); }
-}
-
-@keyframes wave {
-    0%, 100% { transform: rotate(-20deg) translateY(0px); }
-    50% { transform: rotate(-20deg) translateY(-3px); }
+@keyframes helpFloat {
+    0%, 100% { 
+        transform: translateY(-50%) scale(0.8) translateZ(0);
+    }
+    50% { 
+        transform: translateY(-50%) scale(0.8) translateZ(0) translateY(-2px);
+    }
 }
 
 @keyframes chibiPeek {
-    0%, 80%, 100% { right: -120px; }
-    5%, 75% { right: -60px; }
+    0%, 100% { 
+        right: 10px;
+        transform: translateY(-50%) scale(0.8);
+    }
+    50% { 
+        right: 15px;
+        transform: translateY(-50%) scale(0.82);
+    }
 }
 
 @keyframes chibiFloat {
@@ -1804,7 +1952,7 @@ input:checked + .slider.round:before {
         width: 100% !important;
         max-width: 400px !important;
         height: 150px !important;
-        bottom: -60px !important;
+        bottom: -120px !important;
         flex-wrap: wrap !important;
         gap: 5px !important;
         padding: 0 10px !important;
@@ -1826,13 +1974,13 @@ input:checked + .slider.round:before {
     }
     
     #chibi-helper {
-        right: -80px !important;
+        right: 5px !important;
         top: 60% !important;
-        transform: translateY(-50%) scale(0.8) !important;
+        transform: translateY(-50%) scale(0.7) !important;
     }
     
     #chibi-helper:hover {
-        right: -40px !important;
+        right: 15px !important;
     }
     
     .query-card {
@@ -1897,7 +2045,7 @@ input:checked + .slider.round:before {
     #card-hand {
         width: 700px !important;
         height: 280px !important;
-        bottom: -70px !important;
+        bottom: -120px !important;
         gap: -5px !important;
     }
     
@@ -1916,12 +2064,12 @@ input:checked + .slider.round:before {
     }
     
     #chibi-helper {
-        right: -100px !important;
-        transform: translateY(-50%) scale(0.9) !important;
+        right: 8px !important;
+        transform: translateY(-50%) scale(0.75) !important;
     }
     
     #chibi-helper:hover {
-        right: -50px !important;
+        right: 18px !important;
     }
     
     .query-card {
@@ -1974,7 +2122,7 @@ input:checked + .slider.round:before {
     #card-hand {
         width: 400px !important;
         height: 140px !important;
-        bottom: -5px !important;
+        bottom: -120px !important;
         gap: 3px !important;
     }
     
@@ -2054,12 +2202,12 @@ input:checked + .slider.round:before {
     }
     
     #chibi-helper {
-        right: -120px !important;
-        transform: translateY(-50%) scale(1) !important;
+        right: 10px !important;
+        transform: translateY(-50%) scale(0.8) !important;
     }
     
     #chibi-helper:hover {
-        right: -60px !important;
+        right: 20px !important;
     }
     
     .query-card {
@@ -2122,12 +2270,12 @@ input:checked + .slider.round:before {
     }
     
     #chibi-helper {
-        right: -90px !important;
-        transform: translateY(-50%) scale(0.85) !important;
+        right: 10px !important;
+        transform: translateY(-50%) scale(0.8) !important;
     }
     
     #chibi-helper:hover {
-        right: -45px !important;
+        right: 20px !important;
     }
     
     .query-card {
@@ -2198,12 +2346,12 @@ input:checked + .slider.round:before {
     }
     
     #chibi-helper {
-        right: -115px !important;
-        transform: translateY(-50%) scale(0.98) !important;
+        right: 10px !important;
+        transform: translateY(-50%) scale(0.8) !important;
     }
     
     #chibi-helper:hover {
-        right: -58px !important;
+        right: 20px !important;
     }
     
     .query-card {
@@ -2275,12 +2423,12 @@ input:checked + .slider.round:before {
     }
     
     #chibi-helper {
-        right: -120px !important;
-        transform: translateY(-50%) scale(1) !important;
+        right: 10px !important;
+        transform: translateY(-50%) scale(0.8) !important;
     }
     
     #chibi-helper:hover {
-        right: -60px !important;
+        right: 20px !important;
     }
     
     .query-card {
@@ -2352,12 +2500,12 @@ input:checked + .slider.round:before {
     }
     
     #chibi-helper {
-        right: -130px !important;
-        transform: translateY(-50%) scale(1.1) !important;
+        right: 10px !important;
+        transform: translateY(-50%) scale(0.8) !important;
     }
     
     #chibi-helper:hover {
-        right: -65px !important;
+        right: 20px !important;
     }
     
     .query-card {
