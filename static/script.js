@@ -1,35 +1,52 @@
-// Idioma actual (default: inglés)
+/**
+ * Portfolio Application - Main JavaScript File
+ * 
+ * This file handles all the interactive functionality of the portfolio website,
+ * including language selection, SQL query building, and tutorial system.
+ */
+
+// Global variables
 let currentLang = "en";
 let languageSelected = false;
 
-// Initialize language popup on page load
+// Initialize application on page load
 document.addEventListener('DOMContentLoaded', function() {
     showLanguagePopup();
-    
-    // Keep existing functionality
     updateBuilderDisplay();
     setupBuilderControls();
-    
-    // Don't initialize tutorial system here - wait for language selection
 });
 
+/**
+ * Show the language selection popup
+ */
 function showLanguagePopup() {
     const languagePopup = document.getElementById('language-popup');
     const languageButtons = document.querySelectorAll('.language-btn');
     
-    // Show popup
+    if (!languagePopup) return;
+    
     languagePopup.classList.remove('hidden');
     
-    // Add event listeners to language buttons
     languageButtons.forEach(button => {
         button.addEventListener('click', function() {
             const selectedLang = this.getAttribute('data-lang');
-            selectLanguage(selectedLang);
+            if (selectedLang) {
+                selectLanguage(selectedLang);
+            }
         });
     });
 }
 
+/**
+ * Handle language selection
+ * @param {string} lang - Selected language code ('en' or 'es')
+ */
 function selectLanguage(lang) {
+    if (!lang || !['en', 'es'].includes(lang)) {
+        console.error('Invalid language selected:', lang);
+        return;
+    }
+    
     const languagePopup = document.getElementById('language-popup');
     const body = document.querySelector('body');
     const mainContent = document.querySelector('.main-content');
@@ -40,7 +57,7 @@ function selectLanguage(lang) {
     currentLang = lang;
     languageSelected = true;
     
-    // Update language switch to match selection
+    // Update language switch
     if (langSwitch) {
         langSwitch.checked = (lang === 'es');
     }
@@ -49,32 +66,34 @@ function selectLanguage(lang) {
     }
     
     // Hide popup with animation
-    languagePopup.classList.add('hidden');
+    if (languagePopup) {
+        languagePopup.classList.add('hidden');
+    }
     
     // Remove blur from main content
     setTimeout(() => {
         if (mainContent) {
             mainContent.classList.add('language-selected');
         }
-        body.classList.add('language-selected');
+        if (body) {
+            body.classList.add('language-selected');
+        }
     }, 100);
     
     // Apply language changes
     switchLanguage(lang);
     
-    // Ensure cards are properly positioned after language selection
+    // Initialize components after language selection
     setTimeout(() => {
         resetCardsPosition();
-    }, 300);
-    
-    // Initialize tutorial system after language selection
-    setTimeout(() => {
         initializeTutorialSystem();
-    }, 200);
+    }, 300);
     
     // Remove popup from DOM after animation
     setTimeout(() => {
-        languagePopup.remove();
+        if (languagePopup) {
+            languagePopup.remove();
+        }
     }, 600);
 }
 
@@ -570,17 +589,12 @@ function initializeTutorialSystem() {
     // Tutorial card clicks
     document.querySelectorAll('.tutorial-card').forEach(card => {
         card.addEventListener('click', function() {
-            console.log('Tutorial card clicked:', this);
-            
             if (this.classList.contains('locked')) {
-                console.log('Card is locked, ignoring click');
                 return;
             }
             
             const contentKey = this.getAttribute('data-content');
             const level = parseInt(this.getAttribute('data-level'));
-            
-            console.log('Content key:', contentKey, 'Level:', level);
             
             loadTutorialContent(contentKey, level);
             setActiveTutorialCard(this);
@@ -597,7 +611,6 @@ function initializeTutorialSystem() {
     });
     
     // Initialize with first level content
-    console.log('Initializing tutorial with first level');
     loadTutorialContent('sql', 1);
     
     // Set first card as active
@@ -639,7 +652,6 @@ function openTutorialMode() {
         tutorialOverlay.classList.add('show');
         
         // Initialize tutorial content
-        console.log('Initializing tutorial content on open');
         loadTutorialContent('sql', 1);
         
         // Set first card as active
@@ -703,38 +715,26 @@ function closeTutorialMode() {
     }
 }
 
+/**
+ * Load tutorial content for a specific section and level
+ * @param {string} contentKey - The content key ('sql', 'advanced', etc.)
+ * @param {number} level - The level to load
+ */
 function loadTutorialContent(contentKey, level) {
-    console.log('=== DEBUG: loadTutorialContent called ===');
-    console.log('contentKey:', contentKey, 'level:', level);
-    
     const tutorialTitle = document.getElementById('tutorial-title');
     const tutorialBody = document.getElementById('tutorial-body');
     const prevBtn = document.getElementById('prev-tutorial');
     const nextBtn = document.getElementById('next-tutorial');
     
-    console.log('Elements found:');
-    console.log('- tutorialTitle:', tutorialTitle);
-    console.log('- tutorialBody:', tutorialBody);
-    console.log('- prevBtn:', prevBtn);
-    console.log('- nextBtn:', nextBtn);
-    
-    console.log('Loading tutorial content:', contentKey, 'Level:', level, 'Language:', currentLang);
-    
     const content = cueData[currentLang][contentKey];
-    
-    console.log('Content found:', content);
     
     if (content) {
         if (tutorialTitle) {
             tutorialTitle.textContent = content.title;
-            console.log('Title set to:', content.title);
         }
         if (tutorialBody) {
             tutorialBody.innerHTML = content.body;
-            console.log('Body content set, length:', content.body.length);
         }
-        
-        console.log('Content loaded successfully');
         
         // Setup reveal buttons for practice sections
         const revealBtn = tutorialBody.querySelector('.reveal-btn');
@@ -768,6 +768,10 @@ function loadTutorialContent(contentKey, level) {
     }
 }
 
+/**
+ * Set the active tutorial card
+ * @param {HTMLElement} activeCard - The card to make active
+ */
 function setActiveTutorialCard(activeCard) {
     // Remove active class from all cards
     document.querySelectorAll('.tutorial-card').forEach(card => {
@@ -1035,26 +1039,22 @@ function updateBuilderDisplay() {
         
         // Add event listeners to drop zones after creating them
         document.querySelectorAll('.drop-zone').forEach((zone, zoneIndex) => {
-            console.log('Adding listeners to drop zone:', zoneIndex, zone);
             
             zone.addEventListener('dragover', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 event.dataTransfer.dropEffect = 'copy';
                 this.classList.add('drop-zone-active');
-                console.log('Drag over drop zone:', zoneIndex);
             });
             
             zone.addEventListener('dragenter', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 this.classList.add('drop-zone-active');
-                console.log('Drag enter drop zone:', zoneIndex);
             });
             
             zone.addEventListener('dragleave', function(event) {
                 this.classList.remove('drop-zone-active');
-                console.log('Drag leave drop zone:', zoneIndex);
             });
             
             zone.addEventListener('drop', function(event) {
@@ -1062,12 +1062,10 @@ function updateBuilderDisplay() {
                 event.stopPropagation();
                 
                 const insertIndex = parseInt(this.getAttribute('data-insert-index'));
-                console.log('DROP EVENT! Index:', insertIndex, 'draggedFromPool:', draggedFromPool, 'draggedIndex:', draggedIndex);
                 
                 if (draggedFromPool) {
                     // Adding new block from pool
                     queryBlocks.splice(insertIndex, 0, draggedFromPool);
-                    console.log('Added block from pool:', draggedFromPool);
                     draggedFromPool = null;
                     updateBuilderDisplay();
                 } else if (draggedIndex !== null) {
@@ -1078,7 +1076,6 @@ function updateBuilderDisplay() {
                     // Adjust insert index if we removed a block before the insert position
                     const finalIndex = draggedIndex < insertIndex ? insertIndex - 1 : insertIndex;
                     queryBlocks.splice(finalIndex, 0, draggedBlock);
-                    console.log('Moved existing block to index:', finalIndex);
                     updateBuilderDisplay();
                 }
                 
@@ -1224,7 +1221,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const value = this.getAttribute('data-value');
             const type = this.classList.contains('table-block') ? 'table' : 'default';
             draggedFromPool = { value, type };
-            console.log('Started dragging from pool:', draggedFromPool);
             event.dataTransfer.effectAllowed = 'copy';
             event.dataTransfer.setData('text/plain', value); // Add some data
             this.style.opacity = '0.5';
@@ -1238,7 +1234,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add drag end handler
         block.addEventListener('dragend', function(event) {
-            console.log('Drag end from pool');
             this.style.opacity = '1';
             
             // Hide drop zones
@@ -1251,7 +1246,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Clean up after a short delay to allow drop to complete
             setTimeout(() => {
                 if (draggedFromPool) {
-                    console.log('Cleaning up draggedFromPool');
                     draggedFromPool = null;
                 }
             }, 100);
@@ -1574,13 +1568,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize tutorial system on page load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing tutorial system...');
     initializeTutorialSystem();
     // Automatically load first tutorial level
     loadTutorialContent('sql', 1);
-    
-    // Test if elements exist
-    console.log('Tutorial content area:', document.querySelector('#tutorial-content-area'));
-    console.log('Tutorial title:', document.querySelector('#tutorial-title'));
-    console.log('Tutorial body:', document.querySelector('#tutorial-body'));
 });

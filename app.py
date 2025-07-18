@@ -1,61 +1,179 @@
-from flask import Flask, render_template,request,jsonify
-import sqlite3
+"""
+Portfolio Flask Application
 
-# This is a simple Flask application that serves as a portfolio website.
-# It allows users to submit SQL queries to interact with a SQLite database
+A secure Flask application that serves as a portfolio website,
+allowing users to submit SQL queries to interact with a SQLite database.
+"""
+
+from flask import Flask, render_template, request, jsonify
+import sqlite3
+import re
+import logging
+from typing import Dict, Any, Tuple
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
 
-# Define the path to the SQLite database file
-# This database will store portfolio projects.
+# Constants
 DB_PATH = 'portfolio.db'
+ALLOWED_KEYWORDS = {
+    'SELECT', 'FROM', 'WHERE', 'ORDER BY', 'GROUP BY', 'HAVING', 
+    'LIMIT', 'OFFSET', 'JOIN', 'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN',
+    'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'DISTINCT'
+}
+ALLOWED_TABLES = {'projects', 'skills', 'education', 'experience', 'clients'}
+MAX_QUERY_LENGTH = 1000
 
-# When someone accesses the root URL, render the index.html template
-# This template should contain a form to submit SQL queries and display results.
+def validate_sql_query(query: str) -> Tuple[bool, str]:
+    """
+    Validate SQL query for security and allowed operations.
+    
+    Args:
+        query (str): The SQL query to validate
+        
+    Returns:
+        Tuple[bool, str]: (is_valid, error_message)
+    """
+    if not query or not query.strip():
+        return False, "Query cannot be empty"
+    
+    if len(query) > MAX_QUERY_LENGTH:
+        return False, f"Query too long. Maximum {MAX_QUERY_LENGTH} characters allowed"
+    
+    # Convert to uppercase for keyword checking
+    query_upper = query.upper()
+    
+    # Block dangerous keywords
+    dangerous_keywords = ['DROP', 'DELETE', 'UPDATE', 'INSERT', 'CREATE', 'ALTER', 'TRUNCATE', 'GRANT', 'REVOKE']
+    for keyword in dangerous_keywords:
+        if keyword in query_upper:
+            return False, f"Operation '{keyword}' is not allowed"
+    
+    # Ensure query starts with SELECT
+    if not query_upper.strip().startswith('SELECT'):
+        return False, "Only SELECT queries are allowed"
+    
+    # Check for semicolon (prevent multiple statements)
+    if query.count(';') > 1:
+        return False, "Multiple statements are not allowed"
+    
+    # Validate table names
+    for table in ALLOWED_TABLES:
+        if table.upper() in query_upper:
+            break
+    else:
+        return False, f"Query must reference at least one allowed table: {', '.join(ALLOWED_TABLES)}"
+    
+    return True, ""
+
+
 @app.route('/')
-def index():
+def index() -> str:
+    """
+    Render the main portfolio page.
+    
+    Returns:
+        str: Rendered HTML template
+    """
     return render_template('index.html')
 
 
-# When a POST request is made to the '/query' endpoint, execute the SQL query provided in the form data
-# and return the results as JSON.
 @app.route('/query', methods=['POST'])
-def query():
-    print("Query endpoint hit!")  # <--- prueba si llega el POST
-    sql = request.form.get('query')
-    print("SQL received:", sql)
+def query() -> Dict[str, Any]:
+    """
+    Execute a validated SQL query and return results.
+    
+    Returns:
+        Dict[str, Any]: JSON response with query results or error
+    """
     try:
+        sql = request.form.get('query', '').strip()
+        
+        # Validate the query
+        is_valid, error_message = validate_sql_query(sql)
+        if not is_valid:
+            logger.warning(f"Invalid query attempted: {sql[:100]}...")
+            return jsonify({'error': error_message}), 400
+        
+        # Execute query safely
         with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row  # Enable column access by name
             cursor = conn.cursor()
+            
+            # Set query timeout and limits
+            cursor.execute("PRAGMA query_timeout = 5000")  # 5 seconds timeout
             cursor.execute(sql)
+            
+            # Get column names
             columns = [desc[0] for desc in cursor.description] if cursor.description else []
-            rows = cursor.fetchall()
+            
+            # Fetch results with limit
+            rows = cursor.fetchmany(1000)  # Limit to 1000 rows
+            
+            # Convert Row objects to regular tuples for JSON serialization
+            result_rows = [tuple(row) for row in rows]
+            
+            logger.info(f"Query executed successfully. Returned {len(result_rows)} rows")
+            
             return jsonify({
                 'columns': columns,
-                'rows': rows
+                'rows': result_rows,
+                'row_count': len(result_rows)
             })
+            
+    except sqlite3.Error as e:
+        logger.error(f"Database error: {str(e)}")
+        return jsonify({'error': 'Database query failed'}), 500
     except Exception as e:
-            return jsonify({
-                'error': str(e)
-            })
+        logger.error(f"Unexpected error: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
 
-# When a GET request is made to the '/projects' endpoint, fetch all projects from the database
-# and return them as JSON.
+
 @app.route('/projects', methods=['GET'])
-def projects():
+def projects() -> Dict[str, Any]:
+    """
+    Get all projects from the database.
+    
+    Returns:
+        Dict[str, Any]: JSON response with projects data or error
+    """
     try:
         with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM projects")
+            cursor.execute("SELECT * FROM projects LIMIT 100")
+            
             columns = [desc[0] for desc in cursor.description]
-            rows = cursor.fetchall()
+            rows = [tuple(row) for row in cursor.fetchall()]
+            
             return jsonify({
                 'columns': columns,
-                'rows': rows
+                'rows': rows,
+                'row_count': len(rows)
             })
+            
+    except sqlite3.Error as e:
+        logger.error(f"Database error in projects endpoint: {str(e)}")
+        return jsonify({'error': 'Failed to fetch projects'}), 500
     except Exception as e:
-        return jsonify({
-            'error': str(e)
-        })
+        logger.error(f"Unexpected error in projects endpoint: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.errorhandler(404)
+def not_found(error) -> Tuple[Dict[str, str], int]:
+    """Handle 404 errors."""
+    return jsonify({'error': 'Endpoint not found'}), 404
+
+
+@app.errorhandler(405)
+def method_not_allowed(error) -> Tuple[Dict[str, str], int]:
+    """Handle 405 errors."""
+    return jsonify({'error': 'Method not allowed'}), 405
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run(debug=False, host='127.0.0.1', port=5000)
