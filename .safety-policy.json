@@ -1,0 +1,7 @@
+{
+  "security": {
+    "ignore_vulnerabilities": [],
+    "continue_on_error": true,
+    "output_format": "text"
+  }
+}

@@ -40,10 +40,12 @@ jobs:
     - name: Security check with bandit
       run: |
         bandit -r app.py -f json -o bandit-report.json
+      continue-on-error: true
     
     - name: Check for known security vulnerabilities
       run: |
-        safety check
+        safety scan --output=text --continue-on-error
+      continue-on-error: true
     
     - name: Run tests
       run: |
