@@ -15,7 +15,7 @@ def main():
     try:
         print("Attempting to start with gunicorn...")
         cmd = [
-            sys.executable, "-m", "gunicorn",
+            "python3", "-m", "gunicorn",
             "--bind", f"{host}:{port}",
             "--workers", "1",
             "--timeout", "60",

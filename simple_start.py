@@ -7,12 +7,24 @@ import os
 import sys
 
 def main():
+    print("=== Railway Deployment Debug Info ===")
+    print(f"Python version: {sys.version}")
+    print(f"Python executable: {sys.executable}")
+    print(f"Current working directory: {os.getcwd()}")
+    print(f"Environment PORT: {os.environ.get('PORT', 'NOT SET')}")
+    print(f"Environment HOST: {os.environ.get('HOST', 'NOT SET')}")
+    print("=====================================")
+    
     # Import the Flask app
     try:
+        print("Importing Flask app...")
         import app
-        print("Flask app imported successfully")
+        print("✅ Flask app imported successfully")
     except Exception as e:
-        print(f"Failed to import app: {e}")
+        print(f"❌ Failed to import app: {e}")
+        print(f"Python path: {sys.path}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
     
     # Get configuration
@@ -20,8 +32,8 @@ def main():
     host = os.environ.get("HOST", "0.0.0.0")
     debug = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
     
-    print(f"Starting Flask server on {host}:{port}")
-    print(f"Debug mode: {debug}")
+    print(f"🚀 Starting Flask server on {host}:{port}")
+    print(f"🔧 Debug mode: {debug}")
     
     # Start the Flask app
     try:
@@ -33,7 +45,9 @@ def main():
             use_reloader=False  # Disable reloader in production
         )
     except Exception as e:
-        print(f"Failed to start Flask app: {e}")
+        print(f"❌ Failed to start Flask app: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
 
 if __name__ == "__main__":
