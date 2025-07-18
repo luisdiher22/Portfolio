@@ -1338,7 +1338,7 @@ textarea:focus {
 }
 
 /* ====== RESPONSIVE ====== */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .main-content {
         flex-direction: column;
         align-items: center;
