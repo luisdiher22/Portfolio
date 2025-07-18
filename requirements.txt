@@ -1,5 +1,12 @@
-Flask==3.1.1
-gunicorn==23.0.0
-Werkzeug>=3.1.0
-pytest==7.4.3
-python-dotenv==1.0.0
+# Core Flask dependencies
+Flask>=2.3.3,<4.0.0
+Werkzeug>=2.3.8
+
+# Production server
+gunicorn>=22.0.0,<24.0.0
+
+# Development and testing
+pytest>=7.4.0,<8.0.0
+
+# Configuration
+python-dotenv>=1.0.0,<2.0.0
